@@ -1,36 +1,160 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SignalOrbit
 
-## Getting Started
+Marketing site for SignalOrbit, an AI-assisted outbound sales service: prospect
+research, individually personalized outreach, and reply management run through
+email accounts the client owns and authorizes.
 
-First, run the development server:
+Built with Next.js 16 (App Router), TypeScript, Tailwind CSS v4, and React Three
+Fiber.
+
+**Live preview:** https://walljohn.github.io/signalorbit/ — a static export
+built by `.github/workflows/deploy-pages.yml` on every push to `main`. GitHub
+Pages has no Node runtime, so that workflow deletes `src/app/api` before
+building and Next falls back to a static export (`next.config.ts` switches on
+`GITHUB_PAGES=true`). Everything on the preview is fully live — the 3D scene,
+the process walkthrough, the demo composer, form validation — except actual
+delivery of the consultation form, which correctly reports that no backend is
+connected rather than faking a success. Deploy the full app (this repo, with
+`src/app/api` intact) to a Node host such as Vercel for a working form.
+
+---
+
+## Running it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # production build (also typechecks)
+npm start        # serve the production build
+npx eslint .     # lint
+npx tsc --noEmit # typecheck only
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Required backend configuration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The consultation form is the only part of the site that needs configuration.
+`POST /api/consultation` validates the submission server-side and then delivers
+it. **It refuses to report success for an enquiry it did not deliver** — with no
+delivery target configured it returns `503` and the form tells the visitor the
+enquiry was not sent.
 
-## Learn More
+Copy `.env.example` to `.env.local` and configure **one** of:
 
-To learn more about Next.js, take a look at the following resources:
+| Option | Variables | Behaviour |
+| --- | --- | --- |
+| Webhook *(recommended)* | `CONSULTATION_WEBHOOK_URL` | `POST`s the enquiry as JSON. Any non-2xx response is surfaced to the visitor as a failure. |
+| Email via [Resend](https://resend.com) | `RESEND_API_KEY`, `CONSULTATION_TO_EMAIL`, `CONSULTATION_FROM_EMAIL` | Sends the enquiry as plain text with `reply_to` set to the sender. The `from` domain must be verified in Resend. |
+| Console log *(dev only)* | `CONSULTATION_DEV_LOG=true` | Logs the enquiry and returns success. Delivers nothing — never enable in production. |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Webhook payload:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```json
+{
+  "name": "Dana Whitfield",
+  "email": "dana@harborline.example",
+  "website": "https://harborline.example",
+  "audience": "Operations directors at Benelux 3PL businesses, 50–500 staff.",
+  "goals": "A steady flow of qualified conversations for two AEs.",
+  "receivedAt": "2026-09-07T10:04:11.221Z",
+  "userAgent": "Mozilla/5.0 …"
+}
+```
 
-## Deploy on Vercel
+Also set `NEXT_PUBLIC_SITE_URL` (or edit `SITE.url` in `src/lib/content.ts`) so
+canonical URLs and Open Graph tags point at the real domain.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Route behaviour
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Status | Meaning |
+| --- | --- |
+| `200 {ok:true}` | Delivered. Only this shows the success state in the UI. |
+| `422` | Validation failed; `fieldErrors` are mapped back onto the inputs. |
+| `429` | Rate limited — 5 submissions per IP per 10 minutes. |
+| `502` | The configured destination rejected the enquiry. |
+| `503` | No delivery target configured. |
+
+Two things to harden before real traffic:
+
+- **Rate limiting is in-memory**, so it is per-instance. Behind more than one
+  instance, back `src/app/api/consultation/route.ts` with Redis, Upstash, or
+  Vercel KV.
+- **Spam protection is a honeypot field only.** Add a CAPTCHA or Turnstile check
+  if the form attracts bots.
+
+---
+
+## Structure
+
+```
+src/
+  app/
+    layout.tsx                  Metadata, fonts, JSON-LD, skip link, nav, footer
+    page.tsx                    Section composition
+    globals.css                 Design tokens, glass utilities, motion prefs
+    api/consultation/route.ts   Validation, rate limiting, delivery
+  components/
+    hero/Hero.tsx               Hero copy, scrims, tier selection
+    hero/OrbitScene.tsx         React Three Fiber orbital network
+    hero/OrbitFallback.tsx      Static inline-SVG stand-in
+    Nav.tsx  Footer.tsx  Reveal.tsx  ui.tsx
+    Process.tsx                 Auto-advancing four-stage walkthrough
+    EmailDemo.tsx               Verified facts → tailored email (labelled demo)
+    Services.tsx  Scale.tsx  Onboarding.tsx  Faq.tsx  ConsultationForm.tsx
+  lib/
+    content.ts                  All site copy
+    demo.ts                     Fictional prospects for the composer demo
+    hooks.ts                    Motion, viewport, render-tier, parallax hooks
+    validation.ts               Form rules shared by client and server
+```
+
+---
+
+## The hero scene
+
+`useRenderTier()` in `src/lib/hooks.ts` picks one of three tiers on the client
+before anything renders, so the canvas is never mounted on hardware that should
+not run it:
+
+| Tier | Chosen when | What renders |
+| --- | --- | --- |
+| `high` | Desktop-class hardware | Full canvas: 36 nodes, dust field, antialiasing, DPR up to 1.9 |
+| `low` | Screens under 768px, ≤4 GB memory, or ≤4 cores | Canvas with 23 nodes, no antialiasing, DPR capped at 1.4, smaller framing |
+| `static` | `prefers-reduced-motion: reduce`, `navigator.connection.saveData`, no WebGL context, or ≤2 GB / ≤2 cores | `OrbitFallback` — motionless inline SVG, no three.js on the page at all |
+
+Other performance and accessibility properties:
+
+- three.js is loaded through `next/dynamic` with `ssr: false`, so it stays out of
+  the initial payload until a tier has been chosen.
+- The canvas sets `frameloop="never"` once the hero scrolls out of view, so no
+  frames are rendered while you are reading the rest of the page.
+- All animation is additive-blended `Points`, `Sprite`, and `LineSegments` — no
+  lights, no shadows, no post-processing.
+- The canvas is `pointer-events: none` and `aria-hidden`; the fallback SVG
+  carries `role="img"` and a label.
+- Node placement uses a seeded PRNG, so the constellation is identical on every
+  load rather than reshuffling.
+
+The global `prefers-reduced-motion` rule in `globals.css` also flattens every CSS
+transition, the scroll-reveal animations, smooth scrolling, the process
+auto-advance, the demo typewriter, and the 2,500 count-up.
+
+---
+
+## Content notes
+
+The copy is deliberately conservative. There are no prices, testimonials,
+customer logos, performance statistics, or guarantees anywhere on the site —
+pricing is described as a custom monthly proposal produced after a consultation.
+
+- The composer demo uses fictional companies and contacts and is labelled as a
+  demo in the UI, not only in source comments.
+- Prospects are described as cold business contacts who have not asked to be
+  contacted. They are never called organic or inbound leads.
+- The scale section states the 2,500-per-business-day figure as a design ceiling
+  subject to audience size, provider policies, and deliverability, and says
+  plainly that volume does not guarantee meetings or sales.
+
+If you change the copy, keep those constraints — several of them are compliance
+statements, not marketing.
