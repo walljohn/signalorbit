@@ -3,6 +3,7 @@
 import { useId, useRef, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/ui";
+import { FREE_LEADS } from "@/lib/content";
 import {
   validateConsultation,
   type ConsultationInput,
@@ -156,16 +157,16 @@ export function ConsultationForm() {
           <Reveal>
             <div className="lg:sticky lg:top-28">
               <SectionHeading
-                eyebrow="Consultation"
-                title="Plan my outreach."
-                lede="Tell us who you sell to and what you are trying to achieve. We will come back with a custom monthly proposal built around your audience — not a package picked off a pricing page."
+                eyebrow="Free leads"
+                title={`Get your first ${FREE_LEADS} leads free.`}
+                lede={`Tell us who you sell to. We’ll turn it into a written lead brief and deliver ${FREE_LEADS} verified leads against it before you pay anything.`}
               />
 
               <ul className="mt-10 space-y-4 border-t border-[var(--edge)] pt-8">
                 {[
-                  "A written audience brief before any research starts",
-                  "A custom monthly proposal, scoped to your market",
-                  "No obligation, and no pricing invented before we understand the work",
+                  "A written lead brief with the criteria spelled out",
+                  `${FREE_LEADS} verified leads, each with sources and a recommended route`,
+                  "A custom monthly proposal only if you want more",
                 ].map((item) => (
                   <li key={item} className="flex gap-3.5 text-[0.92rem] leading-relaxed text-dim">
                     <svg
@@ -203,9 +204,8 @@ export function ConsultationForm() {
                     Your request is with us.
                   </h3>
                   <p className="mt-4 max-w-md text-[0.97rem] leading-[1.72] text-mist">
-                    We will read it properly and reply from a real person, usually within one
-                    business day. If anything in your answers needs clarifying, that reply will ask
-                    rather than assume.
+                    We&rsquo;ll read it properly and reply from a real person, usually within one
+                    business day, to confirm your lead brief before any research starts.
                   </p>
                   <button
                     type="button"
@@ -317,7 +317,7 @@ export function ConsultationForm() {
                     disabled={status === "submitting"}
                     className="group mt-7 inline-flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-signal px-7 py-3.5 text-[0.95rem] font-medium text-[#03080f] shadow-[0_14px_44px_-14px_rgba(77,163,255,0.8)] transition-all duration-300 hover:bg-signal-soft disabled:cursor-wait disabled:opacity-60 sm:w-auto"
                   >
-                    {status === "submitting" ? "Sending…" : "Request my proposal"}
+                    {status === "submitting" ? "Sending…" : "Request my free leads"}
                     {status === "submitting" ? null : (
                       <svg
                         aria-hidden
@@ -335,7 +335,7 @@ export function ConsultationForm() {
                   </button>
 
                   <p className="mt-5 text-[0.79rem] leading-relaxed text-dim">
-                    We use these answers to prepare your proposal and nothing else. No list, no
+                    We use these answers to research your leads and nothing else. No list, no
                     resale, and no automated sequence pointed back at you.
                   </p>
                 </form>

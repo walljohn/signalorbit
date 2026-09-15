@@ -9,8 +9,8 @@ export function Onboarding() {
         <Reveal>
           <SectionHeading
             eyebrow="Getting started"
-            title="Three steps, and you keep the keys."
-            lede="Onboarding is deliberately boring. You set up a mailbox, you grant us access to it, and you approve the campaign. There is no migration project and no handover of anything you own."
+            title="Three steps, and nothing to pay to try it."
+            lede="There’s no setup, and we never ask for access to your email or your CRM. You tell us who you sell to, judge the free batch, and decide."
           />
         </Reveal>
 
@@ -52,11 +52,10 @@ export function Onboarding() {
               </svg>
             </span>
             <p className="text-[0.95rem] leading-[1.7] text-ink">
-              <strong className="font-medium">No domain ownership transfer.</strong>{" "}
+              <strong className="font-medium">You stay in control of your outreach.</strong>{" "}
               <span className="text-mist">
-                The domains and mailboxes stay registered to you and billed to you. Our access is
-                granted through your provider and can be revoked by you at any time, without
-                notice and without involving us.
+                We never send from your accounts or ask for access to your inbox. You choose which
+                leads to contact, how, and when.
               </span>
             </p>
           </div>

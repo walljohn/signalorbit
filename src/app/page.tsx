@@ -2,7 +2,7 @@ import { Hero } from "@/components/hero/Hero";
 import { Process } from "@/components/Process";
 import { EmailDemo } from "@/components/EmailDemo";
 import { Services } from "@/components/Services";
-import { Scale } from "@/components/Scale";
+import { Offer } from "@/components/Offer";
 import { Onboarding } from "@/components/Onboarding";
 import { Faq } from "@/components/Faq";
 import { ConsultationForm } from "@/components/ConsultationForm";
@@ -17,7 +17,7 @@ export default function Home() {
       <EmailDemo />
       <Divider />
       <Services />
-      <Scale />
+      <Offer />
       <Divider />
       <Onboarding />
       <Divider />

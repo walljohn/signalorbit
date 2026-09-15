@@ -8,9 +8,9 @@ export function Services() {
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
         <Reveal>
           <SectionHeading
-            eyebrow="What we run"
-            title="Three pieces of work, held to one standard."
-            lede="You can take all three or start with the part that is missing. Either way the standard is the same: nothing goes out under your name that we would not be comfortable receiving."
+            eyebrow="What you get"
+            title="Every lead arrives ready to act on."
+            lede="Research, verification and a recommended approach come together, so each lead reaches you as someone to contact rather than a name you still have to look up."
           />
         </Reveal>
 

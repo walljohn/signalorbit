@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { useIsVisible, useMediaQuery, useRenderTier } from "@/lib/hooks";
 import { Cta } from "@/components/ui";
+import { FREE_LEADS } from "@/lib/content";
 import { OrbitFallback } from "./OrbitFallback";
 
 // WebGL never runs on the server, and the three.js bundle stays out of the
@@ -10,9 +11,9 @@ import { OrbitFallback } from "./OrbitFallback";
 const OrbitScene = dynamic(() => import("./OrbitScene"), { ssr: false });
 
 const ASSURANCES = [
-  "You own the mailbox and the domain",
-  "Human review before anything sends",
-  "Opt-outs actioned the day they arrive",
+  `Your first ${FREE_LEADS} verified leads are free`,
+  "Every lead comes with its sources",
+  "A recommended outreach route for each lead",
 ];
 
 export function Hero() {
@@ -58,7 +59,7 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-signal opacity-70 motion-safe:animate-ping" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
             </span>
-            AI-assisted outbound sales
+            Verified B2B leads
           </p>
 
           <h1 className="mt-7 text-balance text-[2.7rem] leading-[1.03] font-semibold tracking-[-0.035em] text-gradient-ice sm:text-[3.6rem] lg:text-[4.15rem]">
@@ -66,13 +67,13 @@ export function Hero() {
           </h1>
 
           <p className="mt-7 max-w-xl text-pretty text-[1.06rem] leading-[1.72] text-mist sm:text-[1.15rem]">
-            We find the right people, write outreach that speaks to them, and help turn
-            introductions into sales conversations.
+            We find the businesses and decision-makers who fit what you sell, verify every lead
+            before it reaches you, and recommend the best way to reach each one.
           </p>
 
           <div className="mt-11 flex flex-col gap-3.5 sm:flex-row sm:items-center">
             <Cta href="#consultation">
-              Plan my outreach
+              {`Get ${FREE_LEADS} leads free`}
               <svg
                 aria-hidden
                 viewBox="0 0 16 16"
@@ -87,7 +88,7 @@ export function Hero() {
               </svg>
             </Cta>
             <Cta href="#process" variant="ghost">
-              Explore the process
+              See how it works
             </Cta>
           </div>
 

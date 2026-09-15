@@ -143,7 +143,7 @@ export function Process() {
           <SectionHeading
             eyebrow="The process"
             title="Four stages, run in the open."
-            lede="You see the audience before we research it, the research before we write, and the writing before anything sends. Nothing runs on autopilot behind your back."
+            lede="You approve who we look for before research starts, and every lead shows how it was verified. Nothing arrives as an anonymous list."
           />
         </Reveal>
 

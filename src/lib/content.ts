@@ -1,8 +1,11 @@
 export const SITE = {
   name: "SignalOrbit",
-  tagline: "AI-assisted outbound, run with your permission and your oversight.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://signalorbit.example",
+  tagline: "Verified B2B leads, with a recommended way to reach each one.",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://signalorbit.app",
 } as const;
+
+/** Size of the free first batch. Every mention on the site reads from here. */
+export const FREE_LEADS = 25;
 
 export type NavLink = { label: string; href: string; id: string };
 
@@ -10,9 +13,31 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Process", href: "#process", id: "process" },
   { label: "Demo", href: "#demo", id: "demo" },
   { label: "Services", href: "#services", id: "services" },
-  { label: "Scale", href: "#scale", id: "scale" },
+  { label: "Offer", href: "#offer", id: "offer" },
   { label: "Onboarding", href: "#onboarding", id: "onboarding" },
   { label: "FAQ", href: "#faq", id: "faq" },
+];
+
+export type Criterion = { title: string; body: string };
+
+/** The written definition of a lead. The offer, services and FAQ all point here. */
+export const LEAD_CRITERIA: Criterion[] = [
+  {
+    title: "A named decision-maker",
+    body: "The person who owns the problem you solve, not a generic info@ inbox.",
+  },
+  {
+    title: "A company that matches your target",
+    body: "Industry, size, region and any exclusions, exactly as written in your lead brief.",
+  },
+  {
+    title: "A verified work email",
+    body: "Checked before delivery. An address we can’t verify doesn’t count.",
+  },
+  {
+    title: "At least two sourced reasons they fit",
+    body: "Specific, checkable facts, each with a source you can open yourself.",
+  },
 ];
 
 export type Step = {
@@ -26,50 +51,50 @@ export type Step = {
 export const PROCESS_STEPS: Step[] = [
   {
     n: "01",
-    title: "Define your audience",
-    summary: "We agree on exactly who is worth a conversation.",
+    title: "Define your target",
+    summary: "We agree on exactly who is worth your time.",
     detail:
-      "We start from your best existing customers and your commercial goals, then turn that into a written definition: industries, company size, geography, technology signals, and the roles who actually own the problem you solve.",
+      "We start from your best existing customers and what you sell, then write it down: industries, company size, region, buying signals, and the roles that own the problem you solve. That brief sets the criteria every lead is checked against.",
     points: [
-      "Industry, headcount band, region, and buying role",
-      "Exclusion rules for current customers, partners, and competitors",
-      "A written audience brief you sign off on before any research begins",
+      "Industry, company size, region and decision-making role",
+      "Exclusions for current customers, partners and competitors",
+      "A written lead brief you approve before research begins",
     ],
   },
   {
     n: "02",
     title: "Research prospects",
-    summary: "We assemble a shortlist with facts we can point to.",
+    summary: "We build the list from scratch against your brief.",
     detail:
-      "Our researchers and AI tooling work through public and licensed business sources to build company and contact records. Every fact that reaches an email carries a source, and anything we cannot corroborate is dropped rather than guessed.",
+      "Researchers and AI tooling work through public and licensed business sources to find companies that fit and the people who make the decision. Every fact we collect is recorded with where it came from.",
     points: [
-      "Company records built from public and licensed business sources",
-      "Role, seniority, and contact details checked before use",
-      "Unverifiable or stale details are discarded, not inferred",
+      "Companies found through public and licensed business sources",
+      "Decision-makers identified by what they own, not guessed from titles",
+      "Every fact recorded alongside its source",
     ],
   },
   {
     n: "03",
-    title: "Personalize outreach",
-    summary: "Each email is written for one reader, not one segment.",
+    title: "Verify every lead",
+    summary: "Nothing counts as a lead until it passes the checks.",
     detail:
-      "AI drafts from the verified facts on each record, working inside messaging you approve. A human reviews the sequence and spot-checks drafts before anything sends, so tone, claims, and offer stay accurate to your business.",
+      "Before a lead reaches you, a person confirms the role, verifies the work email, and makes sure there are at least two sourced reasons the company fits. Anything we can’t corroborate is dropped rather than guessed.",
     points: [
-      "Drafts grounded in the verified facts on that specific record",
-      "Human review of messaging, claims, and tone before launch",
-      "Your approval on the sequence before the first email leaves",
+      "Role and work email confirmed before delivery",
+      "At least two sourced reasons each lead fits",
+      "Unverifiable or out-of-date details removed",
     ],
   },
   {
     n: "04",
-    title: "Manage replies",
-    summary: "Interested replies reach you ready to answer.",
+    title: "Recommend the route",
+    summary: "Each lead arrives with a way in.",
     detail:
-      "We monitor the inbox, sort replies, handle scheduling logistics, and hand you the conversations worth your time. Opt-outs and negative replies are actioned immediately and suppressed across every future campaign.",
+      "For every lead we recommend the best route — email, LinkedIn, phone or an introduction — the angle to open with, and a draft opener built only from the verified facts. You send it from your own accounts, when it suits you.",
     points: [
-      "Replies triaged daily and routed to the right person on your team",
-      "Meeting scheduling handled through to a confirmed calendar invite",
-      "Opt-outs honoured immediately and suppressed permanently",
+      "The recommended channel for each lead, with the reason",
+      "An angle and a draft opener grounded in the verified facts",
+      "Delivered as a spreadsheet that imports into any CRM",
     ],
   },
 ];
@@ -86,33 +111,33 @@ export const SERVICES: Service[] = [
     kicker: "Research",
     title: "Prospect research",
     body:
-      "We build the target list from scratch against your audience brief, then verify it. You get company and contact records with the reasoning attached, not an anonymous CSV.",
+      "We build your lead list from scratch against a written brief, so every company on it is there for a reason you agreed to. The reasoning arrives with each lead, not buried in an anonymous export.",
     bullets: [
-      "Audience brief translated into a working target list",
-      "Contact and company details verified before use",
-      "Suppression of existing customers, partners, and competitors",
+      "Your target written up as a brief you approve",
+      "Companies and decision-makers found from public and licensed sources",
+      "Existing customers, partners and competitors left out",
     ],
   },
   {
-    kicker: "Messaging",
-    title: "Personalized outreach",
+    kicker: "Verification",
+    title: "Lead verification",
     body:
-      "Every email is drafted from what we actually know about that business. AI does the drafting at volume; a person owns the standard of what goes out under your name.",
+      "A name isn’t a lead until it’s been checked. Each one is confirmed against the same four criteria before it counts toward your delivery.",
     bullets: [
-      "One-to-one drafts built from verified facts on each record",
-      "Sequences, follow-ups, and timing you approve in advance",
-      "Clear identification of your business and a working opt-out",
+      "A named decision-maker at a company matching your target",
+      "A work email verified before delivery",
+      "At least two sourced reasons the company fits",
     ],
   },
   {
-    kicker: "Conversations",
-    title: "Reply management",
+    kicker: "Approach",
+    title: "Outreach recommendations",
     body:
-      "Outbound only pays off if replies are handled well. We watch the inbox, answer the routine questions, and bring you the conversations that deserve a salesperson.",
+      "For each lead we recommend how to get in touch and what to say first. AI drafts from the verified facts; a person checks the recommendation before it reaches you.",
     bullets: [
-      "Daily triage of interested, not-now, and not-interested replies",
-      "Scheduling handled to a confirmed meeting on your calendar",
-      "Weekly reporting on sends, replies, and booked conversations",
+      "The best route for each lead: email, LinkedIn, phone or an introduction",
+      "An angle and a draft opener grounded in the facts",
+      "Guidance on identifying yourself and offering a clear opt-out",
     ],
   },
 ];
@@ -122,21 +147,21 @@ export type OnboardingStep = { n: string; title: string; body: string };
 export const ONBOARDING: OnboardingStep[] = [
   {
     n: "01",
-    title: "Create a dedicated mailbox",
+    title: "Tell us who you sell to",
     body:
-      "You create a new mailbox for outbound — typically on a separate domain you own and register yourself. It stays isolated from the inboxes your team relies on every day.",
+      "Share your best customers, the market you want to grow in, and anyone to leave out. We turn it into a written lead brief with the criteria spelled out, and you approve it.",
   },
   {
     n: "02",
-    title: "Authorize access",
+    title: `Receive your first ${FREE_LEADS} leads free`,
     body:
-      "You grant SignalOrbit access to that mailbox through your provider's standard authorization flow. You can review the permissions when you grant them and revoke them at any time, from your side, without asking us.",
+      "Delivered as a spreadsheet you can import into any CRM. Every lead lists its sources and a recommended route, so you can judge the quality line by line.",
   },
   {
     n: "03",
-    title: "Approve the campaign",
+    title: "Decide what’s next",
     body:
-      "You review the audience brief, the messaging, and the sequence. Nothing sends until you have approved it in writing, and changes mid-campaign go through the same approval.",
+      "If the leads are worth acting on, we’ll send a custom monthly proposal for ongoing delivery. If they aren’t, there’s nothing to cancel and nothing to pay.",
   },
 ];
 
@@ -144,27 +169,35 @@ export type Faq = { q: string; a: string };
 
 export const FAQS: Faq[] = [
   {
-    q: "Who controls the email accounts and domains?",
-    a: "You do. You register the domains, you create the mailboxes, and you own the billing relationship with your email provider. We work inside access you grant us, and you can withdraw that access at any moment through your provider's admin console — no request to us, no waiting period. There is no domain ownership transfer at any point in working with us, and nothing about your account is held in our name.",
+    q: "Are these warm leads?",
+    a: "No, and we won’t call them that. A warm lead has already shown interest in you. Ours are researched, verified prospects who fit your target but haven’t heard from you yet. What they give your outreach is the best possible starting point: the right person, an address that works, and a real reason to get in touch.",
+  },
+  {
+    q: `What counts as one of the ${FREE_LEADS} free leads?`,
+    a: `A named decision-maker, at a company that matches your written target, with a verified work email and at least two sourced reasons they fit. A lead that misses any one of those doesn’t count toward your ${FREE_LEADS}, so the batch is judged on leads that meet the bar rather than on volume.`,
+  },
+  {
+    q: "What happens after the free batch?",
+    a: "If you want ongoing leads, we’ll prepare a custom monthly proposal based on your target market, how many leads you need, and how deep the research goes. Nothing rolls over automatically, and there’s nothing to cancel if you decide not to continue.",
+  },
+  {
+    q: "Who sends the outreach?",
+    a: "You do, from your own accounts. We recommend the channel, the angle and a draft opener for each lead, but we never send on your behalf or ask for access to your inbox or CRM.",
+  },
+  {
+    q: "Where does the data come from?",
+    a: "Public and licensed business sources — company websites, press releases, job listings, business directories and similar. Every lead lists the sources behind its facts so you can check them yourself, and anything we can’t corroborate doesn’t make it in.",
   },
   {
     q: "What is done by AI, and what is done by a person?",
-    a: "AI handles the parts that scale: sifting research sources, structuring company and contact records, and drafting individual emails from verified facts. People own the parts that carry judgement: the audience definition, the claims your business is willing to make, review of the message before launch, spot-checks of drafts during a campaign, and every reply that needs a real answer. No campaign launches on AI output alone.",
+    a: "AI handles the parts that scale: sifting sources, structuring company and contact records, and drafting openers from verified facts. People own the parts that need judgement: your lead brief, the verification checks, the recommended route, and a review of each batch before it’s delivered.",
   },
   {
-    q: "How are opt-outs and unsubscribe requests handled?",
-    a: "Every email identifies your business and gives a working way to opt out. When someone opts out — through the link or by simply replying and asking — we action it on the day and add them to a permanent suppression list applied across every current and future campaign we run for you. We also honour the applicable rules in the regions you are contacting, and we will tell you plainly if an audience you want to reach sits somewhere we are not comfortable sending.",
+    q: "What about anti-spam rules like CASL and CAN-SPAM?",
+    a: "Commercial email is regulated — by CASL in Canada, CAN-SPAM in the US, and similar laws elsewhere. Our recommendations are written to help you comply: identify your business, keep the message relevant to the person’s role, and give a clear way to opt out. Because you send the messages, you’re responsible for how they’re sent, so confirm your approach with a qualified advisor.",
   },
   {
-    q: "Does sending more email guarantee more meetings or sales?",
-    a: "No, and we will not claim otherwise. Volume is an input, not an outcome. Results depend on how well your offer fits the audience, how crowded your market is, your pricing, your reputation, how the timing lands, and how quickly your team follows up on the conversations we surface. We commit to the work — research quality, message quality, and how replies are handled — and we report honestly on what came back. Anyone promising you a number of meetings before they have seen your market is guessing.",
-  },
-  {
-    q: "Where does the prospect data come from?",
-    a: "Public and licensed business sources, assembled into records for the roles and companies in your audience brief. These are cold business prospects who have not asked to hear from you — we are direct about that, and we never describe them as inbound or organic leads. Facts we cannot corroborate do not make it into an email.",
-  },
-  {
-    q: "What does it cost?",
-    a: "We quote a custom monthly proposal after the consultation. Pricing depends on audience size, research depth, how many mailboxes are in play, and how much of the reply handling you want us to carry. We would rather scope it properly than publish a number that turns out to be wrong for your business.",
+    q: "Will more leads guarantee more sales?",
+    a: "No. Leads are an input, not an outcome. Results depend on your offer, your pricing, your market, your timing, and how quickly you follow up. We commit to the quality of the research and verification, and we’ll be straight with you about what we’re seeing.",
   },
 ];

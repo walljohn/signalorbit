@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { NAV_LINKS, SITE } from "@/lib/content";
+import { FREE_LEADS, NAV_LINKS, SITE } from "@/lib/content";
 
 export function Footer() {
   return (
@@ -18,9 +18,8 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-5 max-w-sm text-[0.9rem] leading-[1.72] text-dim">
-              AI-assisted outbound sales, run through email accounts you own and control. We
-              research prospects, write the outreach, and manage the replies — you keep the
-              accounts, the approvals, and the final say.
+              Verified B2B leads, each with its sources and a recommended way in. We research and
+              verify; you keep your accounts and decide who to contact.
             </p>
           </div>
 
@@ -48,7 +47,7 @@ export function Footer() {
                     href="#consultation"
                     className="text-[0.88rem] text-mist transition-colors hover:text-ink"
                   >
-                    Plan my outreach
+                    {`Get ${FREE_LEADS} leads free`}
                   </Link>
                 </li>
                 <li>
@@ -74,11 +73,11 @@ export function Footer() {
 
         <div className="mt-14 border-t border-[var(--edge)] pt-8">
           <p className="max-w-3xl text-[0.79rem] leading-[1.75] text-dim/80">
-            SignalOrbit runs cold business-to-business outreach to prospects who have not previously
-            contacted you. Every email identifies the sending business and carries a working way to
-            opt out. We do not guarantee meetings, pipeline, or revenue — results depend on your
-            offer, your market, and your follow-up. Sample emails and prospect records shown on this
-            site are fictional demonstrations.
+            SignalOrbit researches business-to-business prospects who have not previously contacted
+            you and delivers them as verified leads with their sources. We don&rsquo;t send outreach
+            on your behalf, and we don&rsquo;t guarantee meetings, pipeline or revenue — results
+            depend on your offer, your market and your follow-up. Sample prospects and emails shown
+            on this site are fictional demonstrations.
           </p>
           <p className="mt-6 text-[0.79rem] text-dim">
             &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.

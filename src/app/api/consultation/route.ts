@@ -83,7 +83,7 @@ async function deliver(submission: Submission): Promise<
         from,
         to: [to],
         reply_to: submission.email,
-        subject: `Consultation request — ${submission.name}`,
+        subject: `Free lead batch request — ${submission.name}`,
         text: [
           `Name: ${submission.name}`,
           `Work email: ${submission.email}`,

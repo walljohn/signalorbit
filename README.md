@@ -1,8 +1,10 @@
 # SignalOrbit
 
-Marketing site for SignalOrbit, an AI-assisted outbound sales service: prospect
-research, individually personalized outreach, and reply management run through
-email accounts the client owns and authorizes.
+Marketing site for SignalOrbit, a B2B lead generation service. Each lead is a
+named decision-maker at a company matching the client's written target, with a
+verified work email, at least two sourced reasons they fit, and a recommended
+outreach route. Clients get their first 25 verified leads free, then a custom
+monthly proposal. SignalOrbit does not send outreach on the client's behalf.
 
 Built with Next.js 16 (App Router), TypeScript, Tailwind CSS v4, and React Three
 Fiber.
@@ -100,8 +102,8 @@ src/
     hero/OrbitFallback.tsx      Static inline-SVG stand-in
     Nav.tsx  Footer.tsx  Reveal.tsx  ui.tsx
     Process.tsx                 Auto-advancing four-stage walkthrough
-    EmailDemo.tsx               Verified facts → tailored email (labelled demo)
-    Services.tsx  Scale.tsx  Onboarding.tsx  Faq.tsx  ConsultationForm.tsx
+    EmailDemo.tsx               Verified facts → recommended approach (labelled demo)
+    Services.tsx  Offer.tsx  Onboarding.tsx  Faq.tsx  ConsultationForm.tsx
   lib/
     content.ts                  All site copy
     demo.ts                     Fictional prospects for the composer demo
@@ -138,23 +140,29 @@ Other performance and accessibility properties:
 
 The global `prefers-reduced-motion` rule in `globals.css` also flattens every CSS
 transition, the scroll-reveal animations, smooth scrolling, the process
-auto-advance, the demo typewriter, and the 2,500 count-up.
+auto-advance, and the demo typewriter.
 
 ---
 
 ## Content notes
 
 The copy is deliberately conservative. There are no prices, testimonials,
-customer logos, performance statistics, or guarantees anywhere on the site —
-pricing is described as a custom monthly proposal produced after a consultation.
+customer logos, performance statistics, or outcome guarantees anywhere on the
+site.
 
+- **The offer lives in one constant.** `FREE_LEADS` in `src/lib/content.ts`
+  drives every mention of the free batch — hero, offer section, onboarding, FAQ,
+  form and metadata. Change the number there.
+- **A lead has a written definition.** `LEAD_CRITERIA` in the same file is the
+  bar a lead must clear to count: a named decision-maker, a company matching the
+  target, a verified work email, and at least two sourced reasons they fit.
+- **Leads are never called warm.** They are researched prospects who haven't
+  heard from the client yet. The FAQ says so directly; keep it that way, since a
+  pay-after-results offer is exactly where an overstated promise turns into a
+  payment dispute.
+- **SignalOrbit recommends, the client sends.** The site describes outreach
+  recommendations (route, angle, draft opener) and says plainly that we never
+  send from client accounts. The FAQ points clients to CASL / CAN-SPAM and to a
+  qualified advisor, because they are responsible for what they send.
 - The composer demo uses fictional companies and contacts and is labelled as a
   demo in the UI, not only in source comments.
-- Prospects are described as cold business contacts who have not asked to be
-  contacted. They are never called organic or inbound leads.
-- The scale section states the 2,500-per-business-day figure as a design ceiling
-  subject to audience size, provider policies, and deliverability, and says
-  plainly that volume does not guarantee meetings or sales.
-
-If you change the copy, keep those constraints — several of them are compliance
-statements, not marketing.

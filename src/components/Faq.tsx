@@ -16,7 +16,7 @@ export function Faq() {
             <div className="lg:sticky lg:top-28">
               <SectionHeading
                 eyebrow="Questions"
-                title="The things worth asking before you sign anything."
+                title="The things worth asking before you start."
                 lede="If a question you have is not here, ask it on the consultation call. We would rather lose the work than win it on a misunderstanding."
               />
             </div>

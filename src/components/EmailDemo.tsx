@@ -67,8 +67,8 @@ export function EmailDemo() {
         <Reveal>
           <SectionHeading
             eyebrow="Interactive demo"
-            title="Verified facts in. One tailored email out."
-            lede="Toggle what we have been able to verify about this business and watch the draft change. Remove every fact and there is nothing honest left to write — which is exactly how we treat it in a real campaign."
+            title="Verified facts in. A recommended approach out."
+            lede="Every lead we deliver comes with a recommended route and a draft opener built from what we verified. Toggle the facts and watch the draft change. Remove them all and there is nothing honest left to suggest, so in a real delivery that lead goes back for research."
           />
         </Reveal>
 
@@ -184,16 +184,24 @@ export function EmailDemo() {
                 <div className="flex items-center gap-2">
                   <span aria-hidden className="h-2 w-2 rounded-full bg-signal/70" />
                   <span className="font-mono text-[10px] tracking-[0.24em] text-dim uppercase">
-                    Draft &middot; not sent
+                    Recommended approach
                   </span>
                 </div>
                 <span className="font-mono text-[10px] tracking-[0.18em] text-dim uppercase">
-                  {typing ? "Composing" : "Ready for review"}
+                  {typing ? "Drafting" : "Ready for you to send"}
                 </span>
               </div>
 
               <div className="space-y-2 border-b border-[var(--edge)] px-6 py-5 text-[0.86rem] sm:px-8">
                 <p className="flex gap-3">
+                  <span className="w-14 shrink-0 text-dim">Route</span>
+                  <span className="font-medium text-ink">{prospect.route}</span>
+                </p>
+                <p className="flex gap-3 pb-3">
+                  <span className="w-14 shrink-0 text-dim">Why</span>
+                  <span className="text-mist">{prospect.routeReason}</span>
+                </p>
+                <p className="flex gap-3 border-t border-[var(--edge)] pt-3">
                   <span className="w-14 shrink-0 text-dim">From</span>
                   <span className="text-mist">
                     {DEMO_SENDER.name} &lt;alex@meridian-systems.example&gt;
@@ -228,15 +236,15 @@ export function EmailDemo() {
                     <p className="text-[1.02rem] text-ink">Nothing verified, nothing to say.</p>
                     <p className="max-w-sm text-[0.92rem] leading-relaxed text-dim">
                       With no confirmed facts on the record, there is no honest way to personalise
-                      this email. In a real campaign the record goes back for research rather than
-                      getting a generic template.
+                      this approach. In a real delivery the lead goes back for research instead of
+                      reaching you with a generic template.
                     </p>
                   </div>
                 )}
 
                 {/* Screen readers get the finished draft once, instead of every keystroke. */}
                 <p className="sr-only" aria-live="polite">
-                  {email ? `Draft email: ${email}` : "No verified facts selected. No draft written."}
+                  {email ? `Recommended route: ${prospect.route}. Draft opener: ${email}` : "No verified facts selected. No approach drafted."}
                 </p>
               </div>
             </div>

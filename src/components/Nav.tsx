@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { NAV_LINKS, SITE } from "@/lib/content";
+import { FREE_LEADS, NAV_LINKS, SITE } from "@/lib/content";
 import { useActiveSection } from "@/lib/hooks";
 
 function Mark({ className = "" }: { className?: string }) {
@@ -98,7 +98,7 @@ export function Nav() {
             href="#consultation"
             className="hidden rounded-full glass px-5 py-2.5 text-[0.86rem] font-medium text-ink transition-all duration-300 hover:border-[var(--edge-strong)] hover:bg-white/[0.08] sm:inline-flex"
           >
-            Plan my outreach
+            {`Get ${FREE_LEADS} leads free`}
           </Link>
 
           <button
@@ -139,7 +139,7 @@ export function Nav() {
               onClick={() => setOpen(false)}
               className="mt-4 mb-2 block rounded-full bg-signal px-5 py-3 text-center text-[0.94rem] font-medium text-[#03080f]"
             >
-              Plan my outreach
+              {`Get ${FREE_LEADS} leads free`}
             </Link>
           </li>
         </ul>
