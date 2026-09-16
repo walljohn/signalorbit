@@ -17,11 +17,11 @@ export function Services() {
         <div className="mt-14 grid gap-5 md:grid-cols-3">
           {SERVICES.map((service, i) => (
             <Reveal key={service.title} delay={i * 110}>
-              <article className="group glass relative h-full overflow-hidden rounded-[var(--radius-glass)] p-7 transition-all duration-500 hover:-translate-y-1 hover:border-[var(--edge-strong)] sm:p-8">
+              <article className="group glass relative h-full overflow-hidden rounded-[var(--radius-glass)] p-7 transition-all duration-500 hover:-translate-y-1 hover:border-signal/30 hover:shadow-[var(--card-shadow-lift)] sm:p-8">
                 {/* Accent wash that only appears on hover */}
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_60%_at_50%_0%,rgba(77,163,255,0.16),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_60%_at_50%_0%,rgba(22,98,196,0.07),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                 />
                 <div className="relative">
                   <div className="flex items-center justify-between">

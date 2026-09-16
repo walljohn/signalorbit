@@ -1,6 +1,6 @@
 export const SITE = {
   name: "SignalOrbit",
-  tagline: "Verified B2B leads, with a recommended way to reach each one.",
+  tagline: "Verified B2B leads, ready to contact.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://signalorbit.app",
 } as const;
 

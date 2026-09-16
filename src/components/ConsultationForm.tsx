@@ -143,13 +143,13 @@ export function ConsultationForm() {
   };
 
   const inputBase =
-    "w-full rounded-xl border bg-white/[0.02] px-4 py-3 text-[0.95rem] text-ink placeholder:text-dim/70 transition-all duration-300 focus:bg-white/[0.04] focus:outline-none";
+    "w-full rounded-xl border bg-abyss px-4 py-3 text-[0.95rem] text-ink placeholder:text-dim transition-all duration-300 focus:outline-none";
 
   return (
     <section id="consultation" className="relative scroll-mt-24 py-28 sm:py-36">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-[var(--edge-strong)] to-transparent"
       />
 
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
@@ -194,7 +194,7 @@ export function ConsultationForm() {
                 <div className="flex min-h-[26rem] flex-col items-start justify-center">
                   <span
                     aria-hidden
-                    className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-signal/30 bg-signal/10 text-signal"
+                    className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-signal/30 bg-signal-tint text-signal"
                   >
                     <svg viewBox="0 0 20 20" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M3.5 10.4 8 14.8l8.5-9.2" />
@@ -210,7 +210,7 @@ export function ConsultationForm() {
                   <button
                     type="button"
                     onClick={() => setStatus("idle")}
-                    className="mt-8 cursor-pointer text-[0.9rem] text-signal underline-offset-4 transition-colors hover:text-signal-soft hover:underline"
+                    className="mt-8 cursor-pointer text-[0.9rem] text-signal underline-offset-4 transition-colors hover:text-signal-deep hover:underline"
                   >
                     Send another request
                   </button>
@@ -240,8 +240,8 @@ export function ConsultationForm() {
                           .join(" ") || undefined;
 
                       const borderClass = error
-                        ? "border-red-400/50 focus:border-red-400/70"
-                        : "border-[var(--edge)] focus:border-signal/60";
+                        ? "border-red-500/60 focus:border-red-600"
+                        : "border-[var(--edge-strong)] focus:border-signal";
 
                       return (
                         <div key={field.key}>
@@ -290,7 +290,7 @@ export function ConsultationForm() {
                           {error ? (
                             <p
                               id={`${id}-error`}
-                              className="mt-2 flex items-center gap-1.5 text-[0.79rem] text-red-300"
+                              className="mt-2 flex items-center gap-1.5 text-[0.79rem] text-red-700"
                             >
                               <svg aria-hidden viewBox="0 0 14 14" className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
                                 <circle cx="7" cy="7" r="5.6" />
@@ -306,7 +306,7 @@ export function ConsultationForm() {
 
                   <div aria-live="polite">
                     {formError ? (
-                      <p className="mt-6 rounded-xl border border-red-400/25 bg-red-400/[0.07] px-4 py-3 text-[0.86rem] leading-relaxed text-red-200">
+                      <p className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[0.86rem] leading-relaxed text-red-800">
                         {formError}
                       </p>
                     ) : null}
@@ -315,7 +315,7 @@ export function ConsultationForm() {
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="group mt-7 inline-flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-signal px-7 py-3.5 text-[0.95rem] font-medium text-[#03080f] shadow-[0_14px_44px_-14px_rgba(77,163,255,0.8)] transition-all duration-300 hover:bg-signal-soft disabled:cursor-wait disabled:opacity-60 sm:w-auto"
+                    className="group mt-7 inline-flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-signal px-7 py-3.5 text-[0.95rem] font-medium text-white shadow-[0_10px_28px_-12px_rgba(22,98,196,0.65)] transition-all duration-300 hover:bg-signal-deep disabled:cursor-wait disabled:opacity-60 sm:w-auto"
                   >
                     {status === "submitting" ? "Sending…" : "Request my free leads"}
                     {status === "submitting" ? null : (

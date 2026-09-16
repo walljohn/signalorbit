@@ -8,8 +8,8 @@ import { useActiveSection } from "@/lib/hooks";
 function Mark({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 32 32" className={className} aria-hidden fill="none">
-      <ellipse cx="16" cy="16" rx="14" ry="6.4" stroke="currentColor" strokeOpacity="0.42" transform="rotate(-24 16 16)" />
-      <ellipse cx="16" cy="16" rx="14" ry="6.4" stroke="currentColor" strokeOpacity="0.22" transform="rotate(34 16 16)" />
+      <ellipse cx="16" cy="16" rx="14" ry="6.4" stroke="currentColor" strokeOpacity="0.5" transform="rotate(-24 16 16)" />
+      <ellipse cx="16" cy="16" rx="14" ry="6.4" stroke="currentColor" strokeOpacity="0.28" transform="rotate(34 16 16)" />
       <circle cx="16" cy="16" r="3.4" fill="currentColor" />
       <circle cx="28.2" cy="10.6" r="1.7" fill="currentColor" opacity="0.85" />
       <circle cx="5.4" cy="20.4" r="1.4" fill="currentColor" opacity="0.6" />
@@ -52,7 +52,7 @@ export function Nav() {
       className={[
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled
-          ? "border-b border-[var(--edge)] bg-void/72 backdrop-blur-xl backdrop-saturate-150"
+          ? "border-b border-[var(--edge)] bg-white/85 backdrop-blur-xl backdrop-saturate-150"
           : "border-b border-transparent",
       ].join(" ")}
     >
@@ -62,7 +62,7 @@ export function Nav() {
       >
         <Link
           href="#top"
-          className="flex items-center gap-2.5 text-ink transition-opacity hover:opacity-80"
+          className="flex items-center gap-2.5 text-ink transition-opacity hover:opacity-70"
           onClick={() => setOpen(false)}
         >
           <Mark className="h-7 w-7 text-signal" />
@@ -77,7 +77,7 @@ export function Nav() {
                 aria-current={active === link.id ? "true" : undefined}
                 className={[
                   "relative rounded-full px-3.5 py-2 text-[0.88rem] transition-colors duration-300",
-                  active === link.id ? "text-ink" : "text-dim hover:text-mist",
+                  active === link.id ? "text-ink" : "text-mist hover:text-ink",
                 ].join(" ")}
               >
                 {link.label}
@@ -96,7 +96,7 @@ export function Nav() {
         <div className="flex items-center gap-2">
           <Link
             href="#consultation"
-            className="hidden rounded-full glass px-5 py-2.5 text-[0.86rem] font-medium text-ink transition-all duration-300 hover:border-[var(--edge-strong)] hover:bg-white/[0.08] sm:inline-flex"
+            className="hidden rounded-full bg-signal px-5 py-2.5 text-[0.86rem] font-medium text-white shadow-[0_8px_22px_-12px_rgba(22,98,196,0.7)] transition-all duration-300 hover:bg-signal-deep sm:inline-flex"
           >
             {`Get ${FREE_LEADS} leads free`}
           </Link>
@@ -107,7 +107,7 @@ export function Nav() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full glass text-ink lg:hidden"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--edge-strong)] bg-abyss text-ink lg:hidden"
           >
             <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
               {open ? <path d="M5 5l10 10M15 5 5 15" /> : <path d="M3 6.5h14M3 13.5h14" />}
@@ -119,7 +119,7 @@ export function Nav() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="border-t border-[var(--edge)] bg-void/95 backdrop-blur-xl lg:hidden"
+        className="border-t border-[var(--edge)] bg-white lg:hidden"
       >
         <ul className="mx-auto flex max-w-6xl flex-col px-6 py-3">
           {NAV_LINKS.map((link) => (
@@ -137,7 +137,7 @@ export function Nav() {
             <Link
               href="#consultation"
               onClick={() => setOpen(false)}
-              className="mt-4 mb-2 block rounded-full bg-signal px-5 py-3 text-center text-[0.94rem] font-medium text-[#03080f]"
+              className="mt-4 mb-2 block rounded-full bg-signal px-5 py-3 text-center text-[0.94rem] font-medium text-white"
             >
               {`Get ${FREE_LEADS} leads free`}
             </Link>

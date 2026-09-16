@@ -11,9 +11,9 @@ import { OrbitFallback } from "./OrbitFallback";
 const OrbitScene = dynamic(() => import("./OrbitScene"), { ssr: false });
 
 const ASSURANCES = [
-  `Your first ${FREE_LEADS} verified leads are free`,
-  "Every lead comes with its sources",
-  "A recommended outreach route for each lead",
+  `Your first ${FREE_LEADS} leads are free`,
+  "Named decision-makers with verified emails",
+  "A recommended way in for every lead",
 ];
 
 export function Hero() {
@@ -35,40 +35,43 @@ export function Hero() {
           <OrbitScene tier={tier} split={split} paused={!visible} />
         ) : tier === "static" ? (
           <div className="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-[6vw]">
-            <OrbitFallback className="h-[min(96vw,760px)] w-[min(96vw,760px)] opacity-90" />
+            <OrbitFallback className="h-[min(96vw,760px)] w-[min(96vw,760px)]" />
           </div>
         ) : null}
       </div>
 
-      {/* Readability scrims: a wash from the left on wide layouts, a flat veil
-          on narrow ones where the type sits directly over the network. */}
+      {/* Readability scrims: a flat veil on narrow layouts, where the type sits
+          over the network, and a left-to-right wash on wide ones. `lg:bg-transparent`
+          matters: the veil is a background-COLOR and the wash a background-IMAGE, so
+          without it the flat veil would stay under the gradient and mute the canvas. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-void/72 lg:bg-[linear-gradient(100deg,#04060a_2%,rgba(4,6,10,0.92)_30%,rgba(4,6,10,0.42)_48%,rgba(4,6,10,0)_66%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-void/75 lg:bg-transparent lg:bg-[linear-gradient(90deg,#f7f9fc_0%,rgba(247,249,252,0.94)_34%,rgba(247,249,252,0.45)_52%,rgba(247,249,252,0)_64%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-52 bg-gradient-to-t from-void via-void/80 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-52 bg-gradient-to-t from-void via-void/85 to-transparent"
       />
 
       {/* ---------- Copy ---------- */}
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
         <div className="max-w-2xl">
-          <p className="animate-none inline-flex items-center gap-2.5 rounded-full glass px-4 py-1.5 font-mono text-[11px] tracking-[0.2em] text-signal-soft uppercase">
+          <p className="inline-flex items-center gap-2.5 rounded-full border border-[var(--edge-strong)] bg-abyss px-4 py-1.5 font-mono text-[11px] font-medium tracking-[0.2em] text-signal uppercase">
             <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-signal opacity-70 motion-safe:animate-ping" />
+              <span className="absolute inline-flex h-full w-full rounded-full bg-signal opacity-60 motion-safe:animate-ping" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
             </span>
-            Verified B2B leads
+            B2B lead generation
           </p>
 
-          <h1 className="mt-7 text-balance text-[2.7rem] leading-[1.03] font-semibold tracking-[-0.035em] text-gradient-ice sm:text-[3.6rem] lg:text-[4.15rem]">
-            Your next customer is out there.
+          <h1 className="mt-7 text-balance text-[2.6rem] leading-[1.05] font-semibold tracking-[-0.035em] text-ink sm:text-[3.4rem] lg:text-[3.9rem]">
+            Verified B2B leads, ready to contact.
           </h1>
 
           <p className="mt-7 max-w-xl text-pretty text-[1.06rem] leading-[1.72] text-mist sm:text-[1.15rem]">
-            We find the businesses and decision-makers who fit what you sell, verify every lead
-            before it reaches you, and recommend the best way to reach each one.
+            We find the businesses that fit what you sell, verify the decision-maker and their work
+            email, and recommend exactly how to reach each one. Your first {FREE_LEADS} leads are
+            free.
           </p>
 
           <div className="mt-11 flex flex-col gap-3.5 sm:flex-row sm:items-center">
@@ -92,7 +95,7 @@ export function Hero() {
             </Cta>
           </div>
 
-          <ul className="mt-14 flex flex-col gap-3 text-[0.86rem] text-dim sm:flex-row sm:flex-wrap sm:gap-x-7">
+          <ul className="mt-14 flex flex-col gap-3 text-[0.88rem] text-mist sm:flex-row sm:flex-wrap sm:gap-x-7">
             {ASSURANCES.map((item) => (
               <li key={item} className="flex items-center gap-2.5">
                 <svg
@@ -101,7 +104,7 @@ export function Hero() {
                   className="h-3.5 w-3.5 shrink-0 text-signal"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="1.9"
+                  strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
@@ -119,7 +122,7 @@ export function Hero() {
         className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 items-center gap-2 font-mono text-[10px] tracking-[0.28em] text-dim uppercase transition-colors hover:text-ink lg:flex"
       >
         Scroll
-        <span aria-hidden className="block h-8 w-px bg-gradient-to-b from-signal/70 to-transparent" />
+        <span aria-hidden className="block h-8 w-px bg-gradient-to-b from-signal/60 to-transparent" />
       </a>
     </section>
   );

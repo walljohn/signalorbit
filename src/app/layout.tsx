@@ -18,7 +18,7 @@ const mono = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
-const description = `SignalOrbit delivers verified B2B leads: researched decision-makers with sourced reasons they fit and a recommended outreach route for each. Your first ${FREE_LEADS} leads are free.`;
+const description = `SignalOrbit finds the businesses that fit what you sell, verifies the decision-maker and their work email, and recommends exactly how to reach each one. Your first ${FREE_LEADS} leads are free.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -57,8 +57,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#04060a",
-  colorScheme: "dark",
+  themeColor: "#ffffff",
+  colorScheme: "light",
   width: "device-width",
   initialScale: 1,
 };
@@ -83,7 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="antialiased">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-signal focus:px-5 focus:py-2.5 focus:text-[0.9rem] focus:font-medium focus:text-[#03080f]"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-signal focus:px-5 focus:py-2.5 focus:text-[0.9rem] focus:font-medium focus:text-white"
         >
           Skip to content
         </a>

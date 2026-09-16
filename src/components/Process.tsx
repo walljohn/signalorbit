@@ -17,9 +17,9 @@ const r2 = (n: number) => Math.round(n * 100) / 100;
 
 function StepVisual({ index }: { index: number }) {
   const common = "h-full w-full";
-  const dim = "#1d2b3d";
-  const on = "#4da3ff";
-  const bright = "#cfe6ff";
+  const dim = "#c8d5e4";
+  const on = "#1662c4";
+  const bright = "#0b1a2e";
 
   if (index === 0) {
     return (
@@ -66,7 +66,7 @@ function StepVisual({ index }: { index: number }) {
         {[78, 100, 122, 144].map((y, i) => (
           <g key={y}>
             <rect x="60" y={y} width={[96, 132, 74, 112][i]} height="6" rx="3" fill={dim} />
-            <circle cx="258" cy={y + 3} r="4" fill={i === 3 ? "#3a4859" : on} fillOpacity={i === 3 ? 1 : 0.8} />
+            <circle cx="258" cy={y + 3} r="4" fill={i === 3 ? "#c8d5e4" : on} fillOpacity={i === 3 ? 1 : 0.8} />
           </g>
         ))}
       </svg>
@@ -216,7 +216,7 @@ export function Process() {
           {/* Stage detail */}
           <Reveal delay={120}>
             <div className="glass sticky top-28 overflow-hidden rounded-[var(--radius-glass)]">
-              <div className="relative h-60 border-b border-[var(--edge)] bg-[radial-gradient(120%_120%_at_50%_0%,rgba(77,163,255,0.14),transparent_62%)] px-6 py-5">
+              <div className="relative h-60 border-b border-[var(--edge)] bg-[radial-gradient(120%_120%_at_50%_0%,rgba(22,98,196,0.07),transparent_62%)] px-6 py-5">
                 <div
                   key={active}
                   className="h-full w-full motion-safe:animate-[fade-up_620ms_cubic-bezier(0.16,1,0.3,1)]"

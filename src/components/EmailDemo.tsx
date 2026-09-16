@@ -73,8 +73,8 @@ export function EmailDemo() {
         </Reveal>
 
         <Reveal delay={80}>
-          <p className="mt-7 inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 rounded-2xl border border-amber-300/25 sm:rounded-full bg-amber-200/[0.06] px-4 py-2 text-[0.8rem] text-amber-100/80">
-            <span className="font-mono text-[10px] tracking-[0.22em] text-amber-200/90 uppercase">
+          <p className="mt-7 inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 rounded-2xl border border-amber-300 sm:rounded-full bg-amber-50 px-4 py-2 text-[0.8rem] text-amber-900">
+            <span className="font-mono text-[10px] tracking-[0.22em] text-amber-700 uppercase">
               Demo
             </span>
             Fictional company, fictional contact, illustrative output. Not a customer, not a real
@@ -101,8 +101,8 @@ export function EmailDemo() {
                     className={[
                       "cursor-pointer rounded-full px-3.5 py-1.5 text-[0.8rem] transition-all duration-300",
                       i === prospectIndex
-                        ? "bg-signal/15 text-ink ring-1 ring-signal/40"
-                        : "text-dim hover:bg-white/5 hover:text-mist",
+                        ? "bg-signal-tint text-signal ring-1 ring-signal/30"
+                        : "text-mist hover:bg-void hover:text-ink",
                     ].join(" ")}
                   >
                     {p.company}
@@ -137,8 +137,8 @@ export function EmailDemo() {
                           className={[
                             "flex cursor-pointer gap-3.5 rounded-xl border p-3.5 transition-all duration-300",
                             on
-                              ? "border-signal/30 bg-signal/[0.07]"
-                              : "border-[var(--edge)] bg-white/[0.015] hover:border-[var(--edge-strong)]",
+                              ? "border-signal/35 bg-signal-tint"
+                              : "border-[var(--edge)] bg-void hover:border-[var(--edge-strong)]",
                           ].join(" ")}
                         >
                           <input
@@ -151,11 +151,11 @@ export function EmailDemo() {
                             aria-hidden
                             className={[
                               "mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-[5px] border transition-all duration-200",
-                              on ? "border-signal bg-signal" : "border-white/25 bg-transparent",
+                              on ? "border-signal bg-signal" : "border-[var(--edge-strong)] bg-abyss",
                             ].join(" ")}
                           >
                             {on ? (
-                              <svg viewBox="0 0 12 12" className="h-2.5 w-2.5 text-[#03080f]" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                              <svg viewBox="0 0 12 12" className="h-2.5 w-2.5 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M2 6.2 4.8 9 10 3.4" />
                               </svg>
                             ) : null}

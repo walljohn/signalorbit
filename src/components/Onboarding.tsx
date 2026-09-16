@@ -27,7 +27,7 @@ export function Onboarding() {
                 ) : null}
 
                 <div className="glass h-full rounded-[var(--radius-glass)] p-7 sm:p-8">
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-signal/25 bg-signal/[0.08] font-mono text-[0.78rem] text-signal">
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-signal/25 bg-signal-tint font-mono text-[0.78rem] text-signal">
                     {step.n}
                   </span>
                   <h3 className="mt-6 text-[1.18rem] font-medium tracking-[-0.02em] text-ink">
@@ -41,10 +41,10 @@ export function Onboarding() {
         </div>
 
         <Reveal delay={330}>
-          <div className="mt-6 flex flex-col gap-4 rounded-[var(--radius-glass)] border border-signal/20 bg-signal/[0.05] p-6 sm:flex-row sm:items-center sm:gap-6 sm:p-7">
+          <div className="mt-6 flex flex-col gap-4 rounded-[var(--radius-glass)] border border-signal/25 bg-signal-tint p-6 sm:flex-row sm:items-center sm:gap-6 sm:p-7">
             <span
               aria-hidden
-              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-signal/30 bg-void/60 text-signal"
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-signal/30 bg-abyss text-signal"
             >
               <svg viewBox="0 0 20 20" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M10 2.5 3.5 5.2v4.4c0 3.6 2.6 6.9 6.5 7.9 3.9-1 6.5-4.3 6.5-7.9V5.2L10 2.5Z" />

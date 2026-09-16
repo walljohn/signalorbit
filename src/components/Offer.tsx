@@ -7,7 +7,7 @@ export function Offer() {
     <section id="offer" className="relative scroll-mt-24 py-28 sm:py-36">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-[36rem] -translate-y-1/2 bg-[radial-gradient(60%_50%_at_50%_50%,rgba(77,163,255,0.09),transparent_70%)]"
+        className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-[36rem] -translate-y-1/2 bg-[radial-gradient(60%_50%_at_50%_50%,rgba(22,98,196,0.06),transparent_70%)]"
       />
 
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
@@ -59,7 +59,7 @@ export function Offer() {
                 </p>
                 <ul className="mt-5 grid gap-px overflow-hidden rounded-2xl bg-[var(--edge)]">
                   {LEAD_CRITERIA.map((item) => (
-                    <li key={item.title} className="flex gap-4 bg-abyss/80 p-6 sm:p-7">
+                    <li key={item.title} className="flex gap-4 bg-abyss p-6 sm:p-7">
                       <svg
                         aria-hidden
                         viewBox="0 0 16 16"

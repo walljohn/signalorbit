@@ -1,20 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  /* Surfaces — near-black, cool-shifted */
-  --color-void: #04060a;
-  --color-abyss: #070b12;
-  --color-slate-deep: #0b111b;
+  /* Surfaces — a cool off-white ground with pure white panels on top */
+  --color-void: #f7f9fc;
+  --color-abyss: #ffffff;
+  --color-slate-deep: #eef3f9;
 
-  /* Typography — icy white through cool greys */
-  --color-ink: #e9f1fb;
-  --color-mist: #a3b4cb;
-  --color-dim: #6d7f96;
+  /* Type — deep navy rather than black, which reads warmer on white */
+  --color-ink: #0b1a2e;
+  --color-mist: #41556f;
+  --color-dim: #6c8099;
 
-  /* Restrained electric blue */
-  --color-signal: #4da3ff;
-  --color-signal-soft: #8ec9ff;
-  --color-signal-deep: #1b6fd1;
+  /* Accent — the same electric blue, darkened to stay legible on white */
+  --color-signal: #1662c4;
+  --color-signal-deep: #0e4b9c;
+  --color-signal-tint: #e9f1fc;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-mono-face), ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -22,17 +22,11 @@
   --radius-glass: 18px;
 
   --animate-drift: drift 26s ease-in-out infinite;
-  --animate-pulse-ring: pulse-ring 3.6s ease-out infinite;
   --animate-caret: caret 1.05s steps(1) infinite;
-  --animate-sweep: sweep 2.8s ease-in-out infinite;
 
   @keyframes drift {
     0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
     50% { transform: translate3d(0, -18px, 0) scale(1.04); }
-  }
-  @keyframes pulse-ring {
-    0% { transform: scale(0.72); opacity: 0.55; }
-    100% { transform: scale(1.5); opacity: 0; }
   }
   @keyframes fade-up {
     from { opacity: 0; transform: translateY(10px); }
@@ -42,17 +36,14 @@
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0; }
   }
-  @keyframes sweep {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(220%); }
-  }
 }
 
 :root {
-  color-scheme: dark;
-  --edge: rgba(255, 255, 255, 0.08);
-  --edge-strong: rgba(255, 255, 255, 0.14);
-  --glass: rgba(255, 255, 255, 0.035);
+  color-scheme: light;
+  --edge: rgba(11, 26, 46, 0.1);
+  --edge-strong: rgba(11, 26, 46, 0.18);
+  --card-shadow: 0 1px 2px rgba(11, 26, 46, 0.04), 0 14px 34px -22px rgba(11, 26, 46, 0.22);
+  --card-shadow-lift: 0 1px 2px rgba(11, 26, 46, 0.05), 0 22px 46px -24px rgba(11, 26, 46, 0.28);
 }
 
 html {
@@ -72,8 +63,8 @@ body {
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--color-signal) 34%, transparent);
-  color: #ffffff;
+  background: color-mix(in oklab, var(--color-signal) 20%, transparent);
+  color: var(--color-ink);
 }
 
 :focus-visible {
@@ -82,25 +73,24 @@ body {
   border-radius: 4px;
 }
 
-/* Thin, unobtrusive scrollbar that matches the surface */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+  scrollbar-color: rgba(11, 26, 46, 0.22) transparent;
 }
 *::-webkit-scrollbar { width: 9px; height: 9px; }
 *::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(11, 26, 46, 0.2);
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
+/* A white panel that lifts off the ground with a soft shadow rather than a
+   heavy border — the light-mode counterpart of the old glass surface. */
 @utility glass {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
+  background: var(--color-abyss);
   border: 1px solid var(--edge);
-  backdrop-filter: blur(14px) saturate(120%);
-  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow: var(--card-shadow);
 }
 
 @utility hairline {
@@ -108,17 +98,12 @@ body {
 }
 
 @utility text-gradient-ice {
-  background: linear-gradient(168deg, #ffffff 4%, #dfeafa 42%, #9fbedd 100%);
+  background: linear-gradient(168deg, #0b1a2e 10%, #16304f 60%, #24435f 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-@utility grain {
-  position: relative;
-}
-
-/* Respect the OS-level motion preference everywhere, including smooth scroll */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {

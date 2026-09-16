@@ -72,7 +72,7 @@ export function Footer() {
         </div>
 
         <div className="mt-14 border-t border-[var(--edge)] pt-8">
-          <p className="max-w-3xl text-[0.79rem] leading-[1.75] text-dim/80">
+          <p className="max-w-3xl text-[0.79rem] leading-[1.75] text-dim">
             SignalOrbit researches business-to-business prospects who have not previously contacted
             you and delivers them as verified leads with their sources. We don&rsquo;t send outreach
             on your behalf, and we don&rsquo;t guarantee meetings, pipeline or revenue — results

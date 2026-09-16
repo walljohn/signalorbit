@@ -50,7 +50,7 @@ export function Faq() {
                           className={[
                             "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-all duration-300",
                             isOpen
-                              ? "rotate-45 border-signal/50 bg-signal/15 text-signal"
+                              ? "rotate-45 border-signal/40 bg-signal-tint text-signal"
                               : "border-[var(--edge)] text-dim group-hover:border-[var(--edge-strong)]",
                           ].join(" ")}
                         >

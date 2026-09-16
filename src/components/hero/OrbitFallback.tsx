@@ -31,8 +31,8 @@ function ringNodes(ring: (typeof RINGS)[number]): Node[] {
       // Rounded so server and client serialize the same string.
       x: Math.round((CX + ex * cos - ey * sin) * 100) / 100,
       y: Math.round((CY + ex * sin + ey * cos) * 100) / 100,
-      r: i % 4 === 0 ? 4.2 : 2.8,
-      o: 0.45 + ((i * 37) % 10) / 20,
+      r: i % 4 === 0 ? 4.6 : 3,
+      o: 0.55 + ((i * 37) % 10) / 22,
     };
   });
 }
@@ -46,23 +46,18 @@ export function OrbitFallback({ className = "" }: { className?: string }) {
       aria-label="Illustration of prospect nodes orbiting and connecting to a central business"
     >
       <defs>
-        <radialGradient id="so-core" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
-          <stop offset="22%" stopColor="#bcdcff" stopOpacity="0.55" />
-          <stop offset="55%" stopColor="#4da3ff" stopOpacity="0.16" />
-          <stop offset="100%" stopColor="#4da3ff" stopOpacity="0" />
-        </radialGradient>
-        <radialGradient id="so-node" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#e8f4ff" stopOpacity="1" />
-          <stop offset="100%" stopColor="#4da3ff" stopOpacity="0.15" />
+        <radialGradient id="so-wash" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#1662c4" stopOpacity="0.14" />
+          <stop offset="60%" stopColor="#1662c4" stopOpacity="0.05" />
+          <stop offset="100%" stopColor="#1662c4" stopOpacity="0" />
         </radialGradient>
         <linearGradient id="so-link" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#4da3ff" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#4da3ff" stopOpacity="0.02" />
+          <stop offset="0%" stopColor="#2f76cd" stopOpacity="0.85" />
+          <stop offset="100%" stopColor="#2f76cd" stopOpacity="0.12" />
         </linearGradient>
       </defs>
 
-      <circle cx={CX} cy={CY} r={250} fill="url(#so-core)" opacity="0.7" />
+      <circle cx={CX} cy={CY} r={250} fill="url(#so-wash)" />
 
       {RINGS.map((ring, ri) => (
         <g key={ri}>
@@ -73,8 +68,8 @@ export function OrbitFallback({ className = "" }: { className?: string }) {
             ry={ring.ry}
             transform={`rotate(${ring.rotate} ${CX} ${CY})`}
             fill="none"
-            stroke="#4da3ff"
-            strokeOpacity={0.16}
+            stroke="#1662c4"
+            strokeOpacity={0.22}
             strokeWidth={1}
           />
           {ringNodes(ring).map((node, ni) => (
@@ -86,18 +81,16 @@ export function OrbitFallback({ className = "" }: { className?: string }) {
                 y2={node.y}
                 stroke="url(#so-link)"
                 strokeWidth={0.9}
-                strokeOpacity={0.5}
               />
-              <circle cx={node.x} cy={node.y} r={node.r * 3.4} fill="url(#so-node)" opacity={0.18} />
-              <circle cx={node.x} cy={node.y} r={node.r} fill="#cfe6ff" opacity={node.o} />
+              <circle cx={node.x} cy={node.y} r={node.r} fill={ni % 4 === 0 ? "#0b1a2e" : "#1662c4"} opacity={node.o} />
             </g>
           ))}
         </g>
       ))}
 
-      <circle cx={CX} cy={CY} r={44} fill="none" stroke="#4da3ff" strokeOpacity={0.28} strokeWidth={1} />
-      <circle cx={CX} cy={CY} r={62} fill="none" stroke="#4da3ff" strokeOpacity={0.14} strokeWidth={1} />
-      <circle cx={CX} cy={CY} r={11} fill="#dbeeff" />
+      <circle cx={CX} cy={CY} r={44} fill="none" stroke="#1662c4" strokeOpacity={0.3} strokeWidth={1} />
+      <circle cx={CX} cy={CY} r={62} fill="none" stroke="#1662c4" strokeOpacity={0.18} strokeWidth={1} />
+      <circle cx={CX} cy={CY} r={9} fill="#0b1a2e" />
     </svg>
   );
 }
