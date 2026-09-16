@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/ui";
@@ -335,8 +336,15 @@ export function ConsultationForm() {
                   </button>
 
                   <p className="mt-5 text-[0.79rem] leading-relaxed text-dim">
-                    We use these answers to research your leads and nothing else. No list, no
-                    resale, and no automated sequence pointed back at you.
+                    We use these answers to research your leads and to reply to you, and nothing
+                    else. No list, no resale, and no automated sequence pointed back at you. See our{" "}
+                    <Link
+                      href="/privacy"
+                      className="text-signal underline underline-offset-4 hover:text-signal-deep"
+                    >
+                      Privacy Policy
+                    </Link>
+                    .
                   </p>
                 </form>
               )}

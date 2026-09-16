@@ -10,12 +10,12 @@ export const FREE_LEADS = 25;
 export type NavLink = { label: string; href: string; id: string };
 
 export const NAV_LINKS: NavLink[] = [
-  { label: "Process", href: "#process", id: "process" },
-  { label: "Demo", href: "#demo", id: "demo" },
-  { label: "Services", href: "#services", id: "services" },
-  { label: "Offer", href: "#offer", id: "offer" },
-  { label: "Onboarding", href: "#onboarding", id: "onboarding" },
-  { label: "FAQ", href: "#faq", id: "faq" },
+  { label: "Process", href: "/#process", id: "process" },
+  { label: "Demo", href: "/#demo", id: "demo" },
+  { label: "Services", href: "/#services", id: "services" },
+  { label: "Offer", href: "/#offer", id: "offer" },
+  { label: "Onboarding", href: "/#onboarding", id: "onboarding" },
+  { label: "FAQ", href: "/#faq", id: "faq" },
 ];
 
 export type Criterion = { title: string; body: string };

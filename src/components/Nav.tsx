@@ -61,7 +61,7 @@ export function Nav() {
         className="mx-auto flex h-[4.5rem] w-full max-w-6xl items-center justify-between gap-6 px-6 lg:px-8"
       >
         <Link
-          href="#top"
+          href="/"
           className="flex items-center gap-2.5 text-ink transition-opacity hover:opacity-70"
           onClick={() => setOpen(false)}
         >
@@ -95,7 +95,7 @@ export function Nav() {
 
         <div className="flex items-center gap-2">
           <Link
-            href="#consultation"
+            href="/#consultation"
             className="hidden rounded-full bg-signal px-5 py-2.5 text-[0.86rem] font-medium text-white shadow-[0_8px_22px_-12px_rgba(22,98,196,0.7)] transition-all duration-300 hover:bg-signal-deep sm:inline-flex"
           >
             {`Get ${FREE_LEADS} leads free`}
@@ -135,7 +135,7 @@ export function Nav() {
           ))}
           <li>
             <Link
-              href="#consultation"
+              href="/#consultation"
               onClick={() => setOpen(false)}
               className="mt-4 mb-2 block rounded-full bg-signal px-5 py-3 text-center text-[0.94rem] font-medium text-white"
             >
