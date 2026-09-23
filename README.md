@@ -9,6 +9,8 @@ monthly proposal. SignalOrbit does not send outreach on the client's behalf.
 Built with Next.js 16 (App Router), TypeScript, Tailwind CSS v4, and React Three
 Fiber.
 
+**Operations:** `OPERATIONS.md` covers how the business runs — connecting the form, the research standard, delivery, suppression, pricing and outreach setup. `LEGAL-CHECKLIST.md` lists every placeholder in the legal pages.
+
 **Live preview:** https://walljohn.github.io/signalorbit/ — a static export
 built by `.github/workflows/deploy-pages.yml` on every push to `main`. GitHub
 Pages has no Node runtime, so that workflow deletes `src/app/api` before
