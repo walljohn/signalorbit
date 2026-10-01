@@ -23,8 +23,8 @@ export function Reveal({ children, delay = 0, className = "" }: RevealProps) {
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
       className={[
-        "transition-[opacity,transform,filter] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
-        inView ? "translate-y-0 opacity-100 blur-0" : "translate-y-6 opacity-0 blur-[2px]",
+        "transition-[opacity,transform,filter] duration-[1100ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none",
+        inView ? "translate-y-0 opacity-100 blur-0" : "translate-y-8 opacity-0 blur-[3px]",
         className,
       ].join(" ")}
     >

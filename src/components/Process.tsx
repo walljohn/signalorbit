@@ -137,7 +137,7 @@ export function Process() {
   const step = PROCESS_STEPS[active];
 
   return (
-    <section id="process" ref={ref} className="relative scroll-mt-24 py-28 sm:py-36">
+    <section id="process" ref={ref} className="relative scroll-mt-24 py-32 sm:py-40">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
         <Reveal>
           <SectionHeading
@@ -148,7 +148,7 @@ export function Process() {
         </Reveal>
 
         <div
-          className="mt-16 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-14"
+          className="mt-16 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)] lg:gap-16"
           onMouseEnter={() => setEngaged(true)}
           onFocusCapture={() => setEngaged(true)}
         >
@@ -163,13 +163,13 @@ export function Process() {
                       type="button"
                       onClick={() => select(i)}
                       aria-current={isActive ? "step" : undefined}
-                      className="group relative w-full cursor-pointer border-t border-[var(--edge)] py-6 text-left last:border-b"
+                      className="group relative w-full cursor-pointer border-t border-[var(--edge)] py-7 text-left last:border-b"
                     >
                       {/* Dwell indicator doubles as the active marker */}
                       <span
                         aria-hidden
                         className={[
-                          "absolute top-0 left-0 h-px bg-signal transition-[width]",
+                          "absolute top-0 left-0 h-[2px] rounded-full bg-gradient-to-r from-signal to-signal-glow transition-[width]",
                           isActive
                             ? auto
                               ? "w-full ease-linear"
@@ -181,7 +181,7 @@ export function Process() {
                       <div className="flex items-baseline gap-5">
                         <span
                           className={[
-                            "font-mono text-[11px] tracking-[0.2em] transition-colors duration-300",
+                            "font-mono text-[11px] tracking-[0.22em] transition-colors duration-300",
                             isActive ? "text-signal" : "text-dim group-hover:text-mist",
                           ].join(" ")}
                         >
@@ -190,7 +190,7 @@ export function Process() {
                         <span className="min-w-0">
                           <span
                             className={[
-                              "block text-[1.18rem] font-medium tracking-[-0.02em] transition-colors duration-300 sm:text-[1.3rem]",
+                              "block text-[1.22rem] font-medium tracking-[-0.025em] transition-colors duration-300 sm:text-[1.35rem]",
                               isActive ? "text-ink" : "text-mist group-hover:text-ink",
                             ].join(" ")}
                           >
@@ -198,7 +198,7 @@ export function Process() {
                           </span>
                           <span
                             className={[
-                              "mt-1.5 block text-[0.92rem] leading-relaxed transition-colors duration-300",
+                              "mt-2 block text-[0.94rem] leading-relaxed transition-colors duration-300",
                               isActive ? "text-mist" : "text-dim",
                             ].join(" ")}
                           >
@@ -213,28 +213,28 @@ export function Process() {
             </ol>
           </Reveal>
 
-          {/* Stage detail */}
+          {/* Stage detail — product showcase panel */}
           <Reveal delay={120}>
-            <div className="glass sticky top-28 overflow-hidden rounded-[var(--radius-glass)]">
-              <div className="relative h-60 border-b border-[var(--edge)] bg-[radial-gradient(120%_120%_at_50%_0%,rgba(22,98,196,0.07),transparent_62%)] px-6 py-5">
+            <div className="glass-panel sticky top-28 overflow-hidden rounded-[var(--radius-panel)]">
+              <div className="relative h-64 border-b border-[var(--edge)] bg-[radial-gradient(120%_120%_at_50%_0%,rgba(22,98,196,0.1),transparent_62%),linear-gradient(180deg,rgba(232,241,252,0.55),transparent)] px-6 py-6">
                 <div
                   key={active}
                   className="h-full w-full motion-safe:animate-[fade-up_620ms_cubic-bezier(0.16,1,0.3,1)]"
                 >
                   <StepVisual index={active} />
                 </div>
-                <span className="absolute top-5 right-6 font-mono text-[10px] tracking-[0.26em] text-dim uppercase">
+                <span className="absolute top-5 right-6 rounded-full border border-[var(--edge)] bg-abyss/80 px-3 py-1 font-mono text-[10px] tracking-[0.26em] text-dim uppercase backdrop-blur-sm">
                   Stage {step.n}
                 </span>
               </div>
 
-              <div className="p-7 sm:p-9">
-                <h3 className="text-[1.35rem] font-medium tracking-[-0.02em] text-ink">{step.title}</h3>
-                <p className="mt-4 text-[0.98rem] leading-[1.72] text-mist">{step.detail}</p>
-                <ul className="mt-7 space-y-3.5">
+              <div className="p-8 sm:p-10">
+                <h3 className="text-[1.4rem] font-medium tracking-[-0.025em] text-ink">{step.title}</h3>
+                <p className="mt-4 text-[1rem] leading-[1.75] text-mist">{step.detail}</p>
+                <ul className="mt-8 space-y-3.5">
                   {step.points.map((point) => (
-                    <li key={point} className="flex gap-3.5 text-[0.92rem] leading-relaxed text-dim">
-                      <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-signal" />
+                    <li key={point} className="flex gap-3.5 text-[0.93rem] leading-relaxed text-dim">
+                      <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-signal" />
                       {point}
                     </li>
                   ))}

@@ -4,7 +4,7 @@ import { LEGAL, LEGAL_PAGES } from "@/lib/legal";
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-[var(--edge)] py-16">
+    <footer className="relative border-t border-[var(--edge)] bg-gradient-to-b from-transparent to-slate-deep/40 py-20">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
         <div className="grid gap-12 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1.7fr)]">
           <div>

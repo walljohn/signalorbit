@@ -1,54 +1,72 @@
 @import "tailwindcss";
 
 @theme {
-  /* Surfaces — a cool off-white ground with pure white panels on top */
-  --color-void: #f7f9fc;
+  /* Surfaces — cool paper ground with lifted white panels and deep slate bands */
+  --color-void: #f4f7fb;
   --color-abyss: #ffffff;
-  --color-slate-deep: #eef3f9;
+  --color-slate-deep: #e8eef7;
+  --color-ink-band: #0b1a2e;
 
-  /* Type — deep navy rather than black, which reads warmer on white */
+  /* Type — deep navy rather than black */
   --color-ink: #0b1a2e;
-  --color-mist: #41556f;
-  --color-dim: #6c8099;
+  --color-mist: #3d526b;
+  --color-dim: #6a7f99;
 
-  /* Accent — the same electric blue, darkened to stay legible on white */
+  /* Accent — electric blue, darkened for legibility on white */
   --color-signal: #1662c4;
   --color-signal-deep: #0e4b9c;
-  --color-signal-tint: #e9f1fc;
+  --color-signal-tint: #e8f1fc;
+  --color-signal-glow: #4d8fde;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: var(--font-mono-face), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  --radius-glass: 18px;
+  --radius-glass: 22px;
+  --radius-panel: 28px;
 
   --animate-drift: drift 26s ease-in-out infinite;
   --animate-caret: caret 1.05s steps(1) infinite;
+  --animate-aurora: aurora 18s ease-in-out infinite;
+  --animate-float-slow: float-slow 12s ease-in-out infinite;
 
   @keyframes drift {
     0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
     50% { transform: translate3d(0, -18px, 0) scale(1.04); }
   }
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: translateY(0); }
   }
   @keyframes caret {
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0; }
   }
+  @keyframes aurora {
+    0%, 100% { opacity: 0.55; transform: translate3d(0, 0, 0) scale(1); }
+    40% { opacity: 0.85; transform: translate3d(2%, -1.5%, 0) scale(1.05); }
+    70% { opacity: 0.65; transform: translate3d(-1.5%, 2%, 0) scale(0.98); }
+  }
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+  }
 }
 
 :root {
   color-scheme: light;
-  --edge: rgba(11, 26, 46, 0.1);
-  --edge-strong: rgba(11, 26, 46, 0.18);
-  --card-shadow: 0 1px 2px rgba(11, 26, 46, 0.04), 0 14px 34px -22px rgba(11, 26, 46, 0.22);
-  --card-shadow-lift: 0 1px 2px rgba(11, 26, 46, 0.05), 0 22px 46px -24px rgba(11, 26, 46, 0.28);
+  --edge: rgba(11, 26, 46, 0.09);
+  --edge-strong: rgba(11, 26, 46, 0.16);
+  --card-shadow: 0 1px 2px rgba(11, 26, 46, 0.035), 0 18px 40px -24px rgba(11, 26, 46, 0.28);
+  --card-shadow-lift: 0 2px 4px rgba(11, 26, 46, 0.05), 0 28px 56px -28px rgba(11, 26, 46, 0.35);
+  --panel-shadow: 0 1px 1px rgba(11, 26, 46, 0.03), 0 24px 64px -32px rgba(11, 26, 46, 0.32);
 }
 
 html {
   scroll-behavior: smooth;
-  /* Offset for the fixed header when jumping to an anchor */
   scroll-padding-top: 6.5rem;
   background-color: var(--color-void);
 }
@@ -63,7 +81,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--color-signal) 20%, transparent);
+  background: color-mix(in oklab, var(--color-signal) 22%, transparent);
   color: var(--color-ink);
 }
 
@@ -85,12 +103,17 @@ body {
   background-clip: content-box;
 }
 
-/* A white panel that lifts off the ground with a soft shadow rather than a
-   heavy border — the light-mode counterpart of the old glass surface. */
+/* Lifted white panel — Lightship / Apple product-card feel */
 @utility glass {
   background: var(--color-abyss);
   border: 1px solid var(--edge);
   box-shadow: var(--card-shadow);
+}
+
+@utility glass-panel {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1px solid var(--edge);
+  box-shadow: var(--panel-shadow);
 }
 
 @utility hairline {
@@ -98,10 +121,31 @@ body {
 }
 
 @utility text-gradient-ice {
-  background: linear-gradient(168deg, #0b1a2e 10%, #16304f 60%, #24435f 100%);
+  background: linear-gradient(168deg, #0b1a2e 8%, #16304f 48%, #1f4a78 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+@utility text-gradient-signal {
+  background: linear-gradient(120deg, #0e4b9c 0%, #1662c4 45%, #4d8fde 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Soft mesh wash behind hero / offer — cinematic depth without extra JS */
+@utility mesh-aurora {
+  background:
+    radial-gradient(48% 42% at 78% 28%, rgba(22, 98, 196, 0.16), transparent 70%),
+    radial-gradient(36% 34% at 18% 72%, rgba(77, 143, 222, 0.1), transparent 68%),
+    radial-gradient(28% 28% at 52% 88%, rgba(11, 26, 46, 0.05), transparent 70%);
+}
+
+@utility section-band {
+  background:
+    linear-gradient(180deg, rgba(232, 238, 247, 0.55) 0%, rgba(244, 247, 251, 0) 100%),
+    var(--color-void);
 }
 
 @media (prefers-reduced-motion: reduce) {

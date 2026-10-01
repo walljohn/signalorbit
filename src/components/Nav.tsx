@@ -52,7 +52,7 @@ export function Nav() {
       className={[
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled
-          ? "border-b border-[var(--edge)] bg-white/85 backdrop-blur-xl backdrop-saturate-150"
+          ? "border-b border-[var(--edge)] bg-white/80 shadow-[0_10px_40px_-28px_rgba(11,26,46,0.35)] backdrop-blur-2xl backdrop-saturate-150"
           : "border-b border-transparent",
       ].join(" ")}
     >
@@ -69,7 +69,7 @@ export function Nav() {
           <span className="text-[1.02rem] font-semibold tracking-[-0.02em]">{SITE.name}</span>
         </Link>
 
-        <ul className="hidden items-center gap-1 lg:flex">
+        <ul className="hidden items-center gap-0.5 lg:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.id}>
               <Link
@@ -84,7 +84,7 @@ export function Nav() {
                 <span
                   aria-hidden
                   className={[
-                    "absolute inset-x-3.5 -bottom-0.5 h-px bg-signal transition-all duration-300",
+                    "absolute inset-x-3.5 -bottom-0.5 h-px bg-gradient-to-r from-signal/20 via-signal to-signal/20 transition-all duration-300",
                     active === link.id ? "opacity-100" : "opacity-0",
                   ].join(" ")}
                 />
@@ -96,7 +96,7 @@ export function Nav() {
         <div className="flex items-center gap-2">
           <Link
             href="/#consultation"
-            className="hidden rounded-full bg-signal px-5 py-2.5 text-[0.86rem] font-medium text-white shadow-[0_8px_22px_-12px_rgba(22,98,196,0.7)] transition-all duration-300 hover:bg-signal-deep sm:inline-flex"
+            className="hidden rounded-full bg-signal px-5 py-2.5 text-[0.86rem] font-medium text-white shadow-[0_8px_22px_-12px_rgba(22,98,196,0.7)] transition-all duration-300 hover:bg-signal-deep hover:shadow-[0_12px_28px_-12px_rgba(22,98,196,0.8)] sm:inline-flex"
           >
             {`Get ${FREE_LEADS} leads free`}
           </Link>
@@ -119,7 +119,7 @@ export function Nav() {
       <div
         id="mobile-nav"
         hidden={!open}
-        className="border-t border-[var(--edge)] bg-white lg:hidden"
+        className="border-t border-[var(--edge)] bg-white/95 backdrop-blur-xl lg:hidden"
       >
         <ul className="mx-auto flex max-w-6xl flex-col px-6 py-3">
           {NAV_LINKS.map((link) => (
