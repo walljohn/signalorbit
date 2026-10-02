@@ -13,11 +13,6 @@ import {
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-// Set only by the GitHub Pages workflow, which builds a static export with
-// no /api route behind it (see next.config.ts). Everything else about the
-// form — validation, honeypot, the success gate — behaves identically;
-// only the wording of a failed submit changes, so a static preview never
-// reads as a broken form.
 const STATIC_PREVIEW = process.env.NEXT_PUBLIC_STATIC_PREVIEW === "true";
 
 const EMPTY: ConsultationInput = {
@@ -81,7 +76,6 @@ export function ConsultationForm() {
 
   const setField = (key: keyof ConsultationInput, next: string) => {
     setValues((v) => ({ ...v, [key]: next }));
-    // Clear an error as soon as the visitor starts fixing it.
     setErrors((e) => (e[key] ? { ...e, [key]: undefined } : e));
   };
 
@@ -118,7 +112,6 @@ export function ConsultationForm() {
         .json()
         .catch(() => ({}));
 
-      // Success is only ever shown for a request the server actually accepted.
       if (response.ok && data.ok) {
         setStatus("success");
         setValues(EMPTY);
@@ -144,44 +137,29 @@ export function ConsultationForm() {
   };
 
   const inputBase =
-    "w-full rounded-xl border bg-abyss px-4 py-3 text-[0.95rem] text-ink placeholder:text-dim transition-all duration-300 focus:outline-none";
+    "w-full border bg-void/40 px-4 py-3.5 text-[0.95rem] text-cream placeholder:text-dim transition-colors duration-300 focus:outline-none";
 
   return (
-    <section id="consultation" className="relative scroll-mt-24 py-32 sm:py-40">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-[var(--edge-strong)] to-transparent"
-      />
-
+    <section id="consultation" className="relative scroll-mt-24 py-28 sm:py-36 lg:py-44">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
           <Reveal>
             <div className="lg:sticky lg:top-28">
               <SectionHeading
+                tone="dark"
                 eyebrow="Free leads"
                 title={`Get your first ${FREE_LEADS} leads free.`}
                 lede={`Tell us who you sell to. We’ll turn it into a written lead brief and deliver ${FREE_LEADS} verified leads against it before you pay anything.`}
               />
 
-              <ul className="mt-10 space-y-4 border-t border-[var(--edge)] pt-8">
+              <ul className="mt-10 space-y-4 border-t border-[var(--edge-dark)] pt-8">
                 {[
                   "A written lead brief with the criteria spelled out",
                   `${FREE_LEADS} verified leads, each with sources and a recommended route`,
                   "A custom monthly proposal only if you want more",
                 ].map((item) => (
-                  <li key={item} className="flex gap-3.5 text-[0.92rem] leading-relaxed text-dim">
-                    <svg
-                      aria-hidden
-                      viewBox="0 0 16 16"
-                      className="mt-1 h-3.5 w-3.5 shrink-0 text-signal"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.9"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M2.75 8.4 6.2 11.8l7-7.6" />
-                    </svg>
+                  <li key={item} className="flex gap-3.5 text-[0.92rem] leading-relaxed text-fog">
+                    <span aria-hidden className="mt-2.5 h-px w-4 shrink-0 bg-ember" />
                     {item}
                   </li>
                 ))}
@@ -190,35 +168,34 @@ export function ConsultationForm() {
           </Reveal>
 
           <Reveal delay={110}>
-            <div className="glass-panel rounded-[var(--radius-panel)] p-6 sm:p-9">
+            <div className="stage-frame-dark p-6 sm:p-9">
               {status === "success" ? (
                 <div className="flex min-h-[26rem] flex-col items-start justify-center">
                   <span
                     aria-hidden
-                    className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-signal/30 bg-signal-tint text-signal"
+                    className="inline-flex h-12 w-12 items-center justify-center border border-ember/40 text-ember"
                   >
                     <svg viewBox="0 0 20 20" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M3.5 10.4 8 14.8l8.5-9.2" />
                     </svg>
                   </span>
-                  <h3 className="mt-7 text-[1.5rem] font-medium tracking-[-0.02em] text-ink">
+                  <h3 className="display mt-7 text-[2rem] text-cream">
                     Your request is with us.
                   </h3>
-                  <p className="mt-4 max-w-md text-[0.97rem] leading-[1.72] text-mist">
+                  <p className="mt-4 max-w-md text-[0.97rem] leading-[1.72] text-fog">
                     We&rsquo;ll read it properly and reply from a real person, usually within one
                     business day, to confirm your lead brief before any research starts.
                   </p>
                   <button
                     type="button"
                     onClick={() => setStatus("idle")}
-                    className="mt-8 cursor-pointer text-[0.9rem] text-signal underline-offset-4 transition-colors hover:text-signal-deep hover:underline"
+                    className="mt-8 cursor-pointer text-[0.9rem] text-ember underline-offset-4 transition-colors hover:text-cream hover:underline"
                   >
                     Send another request
                   </button>
                 </div>
               ) : (
                 <form onSubmit={onSubmit} noValidate>
-                  {/* Honeypot — hidden from people, irresistible to bots. */}
                   <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">
                     <label htmlFor={`${uid}-companyFax`}>Company fax</label>
                     <input
@@ -241,14 +218,14 @@ export function ConsultationForm() {
                           .join(" ") || undefined;
 
                       const borderClass = error
-                        ? "border-red-500/60 focus:border-red-600"
-                        : "border-[var(--edge-strong)] focus:border-signal";
+                        ? "border-red-400/60 focus:border-red-400"
+                        : "border-[var(--edge-dark-strong)] focus:border-ember";
 
                       return (
                         <div key={field.key}>
                           <label
                             htmlFor={id}
-                            className="mb-2 block text-[0.85rem] font-medium text-mist"
+                            className="mb-2 block text-[0.85rem] font-medium text-fog"
                           >
                             {field.label}
                           </label>
@@ -291,7 +268,7 @@ export function ConsultationForm() {
                           {error ? (
                             <p
                               id={`${id}-error`}
-                              className="mt-2 flex items-center gap-1.5 text-[0.79rem] text-red-700"
+                              className="mt-2 flex items-center gap-1.5 text-[0.79rem] text-red-300"
                             >
                               <svg aria-hidden viewBox="0 0 14 14" className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
                                 <circle cx="7" cy="7" r="5.6" />
@@ -307,7 +284,7 @@ export function ConsultationForm() {
 
                   <div aria-live="polite">
                     {formError ? (
-                      <p className="mt-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-[0.86rem] leading-relaxed text-red-800">
+                      <p className="mt-6 border border-red-400/40 bg-red-500/10 px-4 py-3 text-[0.86rem] leading-relaxed text-red-200">
                         {formError}
                       </p>
                     ) : null}
@@ -316,7 +293,7 @@ export function ConsultationForm() {
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="group mt-7 inline-flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-signal px-8 py-3.5 text-[0.95rem] font-medium text-white shadow-[0_12px_32px_-12px_rgba(22,98,196,0.7)] transition-all duration-300 hover:bg-signal-deep hover:shadow-[0_18px_40px_-12px_rgba(22,98,196,0.8)] hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60 disabled:hover:translate-y-0 sm:w-auto"
+                    className="group mt-7 inline-flex w-full cursor-pointer items-center justify-center gap-2.5 bg-cream px-8 py-4 text-[0.95rem] font-medium text-ink transition-colors duration-300 hover:bg-white disabled:cursor-wait disabled:opacity-60 sm:w-auto"
                   >
                     {status === "submitting" ? "Sending…" : "Request my free leads"}
                     {status === "submitting" ? null : (
@@ -340,7 +317,7 @@ export function ConsultationForm() {
                     else. No list, no resale, and no automated sequence pointed back at you. See our{" "}
                     <Link
                       href="/privacy"
-                      className="text-signal underline underline-offset-4 hover:text-signal-deep"
+                      className="text-ember underline underline-offset-4 hover:text-cream"
                     >
                       Privacy Policy
                     </Link>

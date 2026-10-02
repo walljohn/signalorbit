@@ -1,13 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useIsVisible, useMediaQuery, useRenderTier } from "@/lib/hooks";
+import { useEffect, useState } from "react";
+import { useIsVisible, useRenderTier } from "@/lib/hooks";
 import { Cta } from "@/components/ui";
 import { FREE_LEADS } from "@/lib/content";
 import { OrbitFallback } from "./OrbitFallback";
 
-// WebGL never runs on the server, and the three.js bundle stays out of the
-// initial payload until the tier check says we are actually going to use it.
 const OrbitScene = dynamic(() => import("./OrbitScene"), { ssr: false });
 
 const ASSURANCES = [
@@ -18,8 +17,19 @@ const ASSURANCES = [
 
 export function Hero() {
   const tier = useRenderTier();
-  const split = useMediaQuery("(min-width: 1024px)");
   const { ref, visible } = useIsVisible<HTMLDivElement>();
+  const [scrollT, setScrollT] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      const h = Math.max(window.innerHeight, 1);
+      setScrollT(Math.min(y / h, 1));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const showCanvas = tier === "high" || tier === "low";
 
@@ -27,56 +37,63 @@ export function Hero() {
     <section
       id="top"
       ref={ref}
-      className="relative isolate flex min-h-[100svh] items-center overflow-hidden pt-28 pb-24 sm:pt-32 sm:pb-28"
+      className="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden band-dark pt-28 pb-16 sm:pb-20 lg:justify-center lg:pb-0"
     >
-      {/* ---------- Backdrop ---------- */}
-      <div aria-hidden className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 mesh-aurora motion-safe:animate-[aurora_18s_ease-in-out_infinite]" />
+      {/* Full-bleed orbit — deliberate centerpiece, not a side ornament */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          transform: `scale(${1 + scrollT * 0.08}) translateY(${scrollT * -4}%)`,
+          opacity: 1 - scrollT * 0.35,
+          transition: "none",
+        }}
+      >
         {showCanvas ? (
-          <OrbitScene tier={tier} split={split} paused={!visible} />
+          <OrbitScene tier={tier} mode="hero" paused={!visible} />
         ) : tier === "static" ? (
-          <div className="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-[6vw]">
-            <OrbitFallback className="h-[min(96vw,760px)] w-[min(96vw,760px)] motion-safe:animate-[float-slow_12s_ease-in-out_infinite]" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <OrbitFallback
+              theme="dark"
+              className="h-[min(110vw,820px)] w-[min(110vw,820px)] opacity-80"
+            />
           </div>
         ) : null}
       </div>
 
-      {/* Readability scrims: a flat veil on narrow layouts, where the type sits
-          over the network, and a left-to-right wash on wide ones. `lg:bg-transparent`
-          matters: the veil is a background-COLOR and the wash a background-IMAGE, so
-          without it the flat veil would stay under the gradient and mute the canvas. */}
+      {/* Cinematic vignette — readability without soft blue glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-void/78 lg:bg-transparent lg:bg-[linear-gradient(90deg,#f4f7fb_0%,rgba(244,247,251,0.96)_32%,rgba(244,247,251,0.5)_50%,rgba(244,247,251,0)_64%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(7,9,13,0.35)_55%,rgba(7,9,13,0.92)_100%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-void via-void/90 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[55%] bg-gradient-to-t from-void via-void/80 to-transparent"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-void to-transparent"
       />
 
-      {/* ---------- Copy ---------- */}
-      <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
-        <div className="max-w-2xl">
-          <p className="inline-flex items-center gap-2.5 rounded-full border border-[var(--edge-strong)] bg-abyss/90 px-4 py-1.5 font-mono text-[11px] font-medium tracking-[0.22em] text-signal uppercase shadow-[0_8px_24px_-16px_rgba(22,98,196,0.45)] backdrop-blur-md">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-signal opacity-60 motion-safe:animate-ping" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
-            </span>
-            B2B lead generation
+      <div className="relative mx-auto w-full max-w-6xl px-6 lg:px-8">
+        <div className="max-w-3xl motion-safe:animate-[rise_1.15s_cubic-bezier(0.16,1,0.3,1)_both]">
+          <p className="font-mono text-[11px] tracking-[0.32em] text-ember uppercase">
+            SignalOrbit
           </p>
 
-          <h1 className="mt-8 text-balance text-[2.75rem] leading-[1.02] font-semibold tracking-[-0.045em] text-ink sm:text-[3.65rem] lg:text-[4.25rem]">
-            Verified B2B leads,{" "}
-            <span className="text-gradient-ice">ready to contact.</span>
+          <h1 className="display mt-6 text-balance text-[3.1rem] text-cream sm:text-[4.5rem] lg:text-[5.75rem]">
+            Verified B2B leads,
+            <br />
+            <span className="text-fog">ready to contact.</span>
           </h1>
 
-          <p className="mt-8 max-w-xl text-pretty text-[1.08rem] leading-[1.75] text-mist sm:text-[1.18rem]">
+          <p className="mt-8 max-w-xl text-pretty text-[1.05rem] leading-[1.75] text-fog sm:text-[1.15rem]">
             We find the businesses that fit what you sell, verify the decision-maker and their work
             email, and recommend exactly how to reach each one. Your first {FREE_LEADS} leads are
             free.
           </p>
 
-          <div className="mt-12 flex flex-col gap-3.5 sm:flex-row sm:items-center">
+          <div className="mt-12">
             <Cta href="#consultation">
               {`Get ${FREE_LEADS} leads free`}
               <svg
@@ -92,29 +109,14 @@ export function Hero() {
                 <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" />
               </svg>
             </Cta>
-            <Cta href="#process" variant="ghost">
-              See how it works
-            </Cta>
           </div>
 
-          <ul className="mt-14 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-3">
+          <ul className="mt-14 flex flex-col gap-3 border-t border-[var(--edge-dark)] pt-8 sm:flex-row sm:flex-wrap sm:gap-x-10 sm:gap-y-3">
             {ASSURANCES.map((item) => (
-              <li
-                key={item}
-                className="inline-flex items-center gap-2.5 rounded-full border border-[var(--edge)] bg-abyss/80 px-4 py-2 text-[0.86rem] text-mist shadow-[0_6px_20px_-14px_rgba(11,26,46,0.35)] backdrop-blur-sm"
-              >
-                <svg
-                  aria-hidden
-                  viewBox="0 0 16 16"
-                  className="h-3.5 w-3.5 shrink-0 text-signal"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M2.75 8.4 6.2 11.8l7-7.6" />
-                </svg>
+              <li key={item} className="flex items-baseline gap-3 text-[0.88rem] text-fog">
+                <span aria-hidden className="font-mono text-[10px] tracking-[0.2em] text-ember">
+                  —
+                </span>
                 {item}
               </li>
             ))}
@@ -124,12 +126,12 @@ export function Hero() {
 
       <a
         href="#process"
-        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 font-mono text-[10px] tracking-[0.3em] text-dim uppercase transition-colors hover:text-ink lg:flex"
+        className="absolute bottom-7 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 font-mono text-[10px] tracking-[0.3em] text-dim uppercase transition-colors hover:text-cream lg:flex"
       >
         Scroll
         <span
           aria-hidden
-          className="block h-10 w-px bg-gradient-to-b from-signal/70 via-signal/30 to-transparent motion-safe:animate-[float-slow_2.8s_ease-in-out_infinite]"
+          className="block h-12 w-px bg-gradient-to-b from-ember/80 via-ember/30 to-transparent motion-safe:animate-[float-slow_2.8s_ease-in-out_infinite]"
         />
       </a>
     </section>

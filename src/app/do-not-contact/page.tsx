@@ -60,11 +60,11 @@ export default function DoNotContactPage() {
           You can also ask us what information we hold about you, where we obtained it, and to
           correct anything wrong. Those requests go to the same address and are answered within 30
           days. Our{" "}
-          <Link href="/privacy" className="text-signal underline underline-offset-4 hover:text-signal-deep">
+          <Link href="/privacy" className="text-ember underline underline-offset-4 hover:text-ink">
             Privacy Policy
           </Link>{" "}
           explains the detail, and our{" "}
-          <Link href="/acceptable-use" className="text-signal underline underline-offset-4 hover:text-signal-deep">
+          <Link href="/acceptable-use" className="text-ember underline underline-offset-4 hover:text-ink">
             Anti-Spam and Acceptable Use policy
           </Link>{" "}
           sets out what we require of clients who send outreach.

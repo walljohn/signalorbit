@@ -91,7 +91,7 @@ export default function AcceptableUsePage() {
         <p>
           You do not have to work out which client contacted you. Tell us and we will add you to our
           permanent suppression list and delete your record. Use the{" "}
-          <Link href="/do-not-contact" className="text-signal underline underline-offset-4 hover:text-signal-deep">
+          <Link href="/do-not-contact" className="text-ember underline underline-offset-4 hover:text-ink">
             Do Not Contact page
           </Link>{" "}
           or write to <Fill value={LEGAL.privacyEmail} />.

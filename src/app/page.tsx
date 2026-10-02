@@ -6,28 +6,24 @@ import { Offer } from "@/components/Offer";
 import { Onboarding } from "@/components/Onboarding";
 import { Faq } from "@/components/Faq";
 import { ConsultationForm } from "@/components/ConsultationForm";
-import { Divider } from "@/components/ui";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <Process />
-      <Divider />
-      <div className="section-band">
+      <div className="band-paper">
+        <Process />
+      </div>
+      <div className="band-dark">
         <EmailDemo />
       </div>
-      <Divider />
-      <Services />
-      <Offer />
-      <Divider />
-      <div className="section-band">
+      <div className="band-paper">
+        <Services />
+        <Offer />
         <Onboarding />
+        <Faq />
       </div>
-      <Divider />
-      <Faq />
-      <div className="relative overflow-hidden">
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 mesh-aurora opacity-70" />
+      <div className="band-dark">
         <ConsultationForm />
       </div>
     </>

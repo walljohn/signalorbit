@@ -1,10 +1,20 @@
 import Link from "next/link";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 
-export function Eyebrow({ children }: { children: ReactNode }) {
+export function Eyebrow({
+  children,
+  tone = "dark",
+}: {
+  children: ReactNode;
+  tone?: "dark" | "light";
+}) {
+  const color = tone === "dark" ? "text-ember" : "text-ember";
+  const rule = tone === "dark" ? "bg-ember/70" : "bg-ember/80";
   return (
-    <span className="inline-flex items-center gap-2.5 font-mono text-[11px] font-medium tracking-[0.28em] text-signal uppercase">
-      <span aria-hidden className="h-px w-7 bg-gradient-to-r from-signal/70 to-signal/10" />
+    <span
+      className={`inline-flex items-center gap-3 font-mono text-[11px] font-medium tracking-[0.32em] uppercase ${color}`}
+    >
+      <span aria-hidden className={`h-px w-8 ${rule}`} />
       {children}
     </span>
   );
@@ -12,18 +22,21 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 
 type CtaProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
-  variant?: "primary" | "ghost";
+  variant?: "solid" | "ghost" | "invert";
   children: ReactNode;
 };
 
-export function Cta({ href, variant = "primary", children, className = "", ...rest }: CtaProps) {
+/** Solid cream on dark / ink on light — fewer, stronger CTAs (Apple / Lightship). */
+export function Cta({ href, variant = "solid", children, className = "", ...rest }: CtaProps) {
   const base =
-    "group relative inline-flex items-center justify-center gap-2.5 rounded-full px-8 py-3.5 text-[0.95rem] font-medium transition-all duration-300 will-change-transform";
+    "group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-[0.92rem] font-medium tracking-[-0.01em] transition-colors duration-300";
 
   const styles =
-    variant === "primary"
-      ? "bg-signal text-white shadow-[0_12px_32px_-12px_rgba(22,98,196,0.7)] hover:bg-signal-deep hover:shadow-[0_18px_40px_-12px_rgba(22,98,196,0.8)] hover:-translate-y-0.5 active:translate-y-0"
-      : "border border-[var(--edge-strong)] bg-abyss/90 text-ink backdrop-blur-sm hover:border-signal/45 hover:bg-signal-tint hover:-translate-y-0.5 active:translate-y-0";
+    variant === "solid"
+      ? "bg-cream text-ink hover:bg-white"
+      : variant === "invert"
+        ? "bg-ink text-cream hover:bg-void"
+        : "border border-current/30 text-inherit hover:border-current/60";
 
   return (
     <Link href={href} className={`${base} ${styles} ${className}`} {...rest}>
@@ -36,21 +49,30 @@ export function SectionHeading({
   eyebrow,
   title,
   lede,
+  tone = "light",
   align = "left",
 }: {
   eyebrow: string;
   title: ReactNode;
   lede?: ReactNode;
+  tone?: "dark" | "light";
   align?: "left" | "center";
 }) {
+  const titleColor = tone === "dark" ? "text-cream" : "text-ink";
+  const ledeColor = tone === "dark" ? "text-fog" : "text-mist";
+
   return (
-    <div className={align === "center" ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
-      <Eyebrow>{eyebrow}</Eyebrow>
-      <h2 className="mt-6 text-balance text-[2.15rem] leading-[1.08] font-semibold tracking-[-0.035em] text-ink sm:text-[2.85rem] lg:text-[3.15rem]">
+    <div className={align === "center" ? "mx-auto max-w-4xl text-center" : "max-w-4xl"}>
+      <Eyebrow tone={tone}>{eyebrow}</Eyebrow>
+      <h2
+        className={`display mt-7 text-balance text-[2.6rem] sm:text-[3.5rem] lg:text-[4.25rem] ${titleColor}`}
+      >
         {title}
       </h2>
       {lede ? (
-        <p className="mt-6 max-w-2xl text-pretty text-[1.05rem] leading-[1.75] text-mist sm:text-[1.1rem]">
+        <p
+          className={`mt-7 max-w-2xl text-pretty text-[1.05rem] leading-[1.75] sm:text-[1.12rem] ${ledeColor} ${align === "center" ? "mx-auto" : ""}`}
+        >
           {lede}
         </p>
       ) : null}
@@ -58,22 +80,12 @@ export function SectionHeading({
   );
 }
 
-/** Hairline rule that fades at both ends — used to separate major sections. */
-export function Divider() {
+export function Divider({ tone = "light" }: { tone?: "dark" | "light" }) {
+  const via = tone === "dark" ? "via-[var(--edge-dark-strong)]" : "via-[var(--edge-light-strong)]";
   return (
     <div
       aria-hidden
-      className="mx-auto h-px w-full max-w-6xl bg-gradient-to-r from-transparent via-[var(--edge-strong)] to-transparent"
-    />
-  );
-}
-
-/** Soft radial wash behind a section for cinematic depth (Apple / Lightship). */
-export function SectionGlow({ className = "" }: { className?: string }) {
-  return (
-    <div
-      aria-hidden
-      className={`pointer-events-none absolute inset-x-0 top-1/2 -z-10 h-[42rem] -translate-y-1/2 bg-[radial-gradient(55%_45%_at_50%_50%,rgba(22,98,196,0.08),transparent_72%)] ${className}`}
+      className={`mx-auto h-px w-full max-w-6xl bg-gradient-to-r from-transparent ${via} to-transparent`}
     />
   );
 }

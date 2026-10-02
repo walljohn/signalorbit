@@ -26,7 +26,7 @@ export default function PrivacyPage() {
             <>
               Anyone can ask to be removed from our research and added to our permanent suppression
               list, at any time, through our{" "}
-              <Link href="/do-not-contact" className="text-signal underline underline-offset-4 hover:text-signal-deep">
+              <Link href="/do-not-contact" className="text-ember underline underline-offset-4 hover:text-ink">
                 Do Not Contact page
               </Link>
               .
@@ -203,7 +203,7 @@ export default function PrivacyPage() {
         />
         <p>
           Write to <Fill value={LEGAL.privacyEmail} /> or use the{" "}
-          <Link href="/do-not-contact" className="text-signal underline underline-offset-4 hover:text-signal-deep">
+          <Link href="/do-not-contact" className="text-ember underline underline-offset-4 hover:text-ink">
             Do Not Contact page
           </Link>
           . We respond within 30 days, as PIPEDA requires. We may ask you to confirm your identity

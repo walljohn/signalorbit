@@ -4,21 +4,21 @@ import { LEGAL, LEGAL_PAGES } from "@/lib/legal";
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-[var(--edge)] bg-gradient-to-b from-transparent to-slate-deep/40 py-20">
+    <footer className="relative border-t border-[var(--edge-dark)] band-dark py-20">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
         <div className="grid gap-12 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1.7fr)]">
           <div>
             <div className="flex items-center gap-2.5">
-              <svg viewBox="0 0 32 32" className="h-6 w-6 text-signal" aria-hidden fill="none">
-                <ellipse cx="16" cy="16" rx="14" ry="6.4" stroke="currentColor" strokeOpacity="0.5" transform="rotate(-24 16 16)" />
-                <ellipse cx="16" cy="16" rx="14" ry="6.4" stroke="currentColor" strokeOpacity="0.28" transform="rotate(34 16 16)" />
+              <svg viewBox="0 0 32 32" className="h-6 w-6 text-ember" aria-hidden fill="none">
+                <ellipse cx="16" cy="16" rx="14" ry="6.4" stroke="currentColor" strokeOpacity="0.55" transform="rotate(-24 16 16)" />
+                <ellipse cx="16" cy="16" rx="14" ry="6.4" stroke="currentColor" strokeOpacity="0.3" transform="rotate(34 16 16)" />
                 <circle cx="16" cy="16" r="3.4" fill="currentColor" />
               </svg>
-              <span className="text-[0.98rem] font-semibold tracking-[-0.02em] text-ink">
+              <span className="text-[0.98rem] font-medium tracking-[-0.02em] text-cream">
                 {SITE.name}
               </span>
             </div>
-            <p className="mt-5 max-w-sm text-[0.9rem] leading-[1.72] text-mist">
+            <p className="mt-5 max-w-sm text-[0.9rem] leading-[1.72] text-fog">
               Verified B2B leads, each with its sources and a recommended way in. We research and
               verify; you keep your accounts and decide who to contact.
             </p>
@@ -32,7 +32,7 @@ export function Footer() {
                   <li key={link.id}>
                     <Link
                       href={link.href}
-                      className="text-[0.88rem] text-mist transition-colors hover:text-ink"
+                      className="text-[0.88rem] text-fog transition-colors hover:text-cream"
                     >
                       {link.label}
                     </Link>
@@ -46,7 +46,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/#consultation"
-                    className="text-[0.88rem] text-mist transition-colors hover:text-ink"
+                    className="text-[0.88rem] text-fog transition-colors hover:text-cream"
                   >
                     {`Get ${FREE_LEADS} leads free`}
                   </Link>
@@ -54,7 +54,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/#demo"
-                    className="text-[0.88rem] text-mist transition-colors hover:text-ink"
+                    className="text-[0.88rem] text-fog transition-colors hover:text-cream"
                   >
                     See the demo
                   </Link>
@@ -62,7 +62,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/#faq"
-                    className="text-[0.88rem] text-mist transition-colors hover:text-ink"
+                    className="text-[0.88rem] text-fog transition-colors hover:text-cream"
                   >
                     Read the FAQ
                   </Link>
@@ -76,7 +76,7 @@ export function Footer() {
                   <li key={page.href}>
                     <Link
                       href={page.href}
-                      className="text-[0.88rem] text-mist transition-colors hover:text-ink"
+                      className="text-[0.88rem] text-fog transition-colors hover:text-cream"
                     >
                       {page.label}
                     </Link>
@@ -87,7 +87,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 border-t border-[var(--edge)] pt-8">
+        <div className="mt-14 border-t border-[var(--edge-dark)] pt-8">
           <p className="max-w-3xl text-[0.79rem] leading-[1.75] text-dim">
             SignalOrbit researches business-to-business prospects who have not previously contacted
             you and delivers them as verified leads with their sources. We don&rsquo;t send outreach
@@ -95,7 +95,7 @@ export function Footer() {
             depend on your offer, your market and your follow-up. Sample prospects and emails shown
             on this site are fictional demonstrations. If you have received outreach and want it to
             stop,{" "}
-            <Link href="/do-not-contact" className="text-signal underline underline-offset-4 hover:text-signal-deep">
+            <Link href="/do-not-contact" className="text-ember underline underline-offset-4 hover:text-cream">
               ask us to suppress your details
             </Link>
             .
