@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="wash" cx="68%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#c4a062" stop-opacity="0.16"/>
+      <stop offset="55%" stop-color="#c4a062" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#07090d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="vignette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#07090d" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#07090d" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#07090d"/>
+  <rect width="1200" height="630" fill="url(#wash)"/>
+  <!-- orbital mark, right side -->
+  <g transform="translate(860 315)">
+    <ellipse cx="0" cy="0" rx="210" ry="78" fill="none" stroke="#c4a062" stroke-width="1.4" opacity="0.35" transform="rotate(-18)"/>
+    <ellipse cx="0" cy="0" rx="155" ry="62" fill="none" stroke="#c4a062" stroke-width="1.6" opacity="0.55" transform="rotate(26)"/>
+    <ellipse cx="0" cy="0" rx="100" ry="42" fill="none" stroke="#f7f4ef" stroke-width="1.1" opacity="0.25" transform="rotate(-42)"/>
+    <circle cx="0" cy="0" r="10" fill="#f7f4ef"/>
+    <circle cx="0" cy="0" r="28" fill="none" stroke="#c4a062" stroke-width="1" opacity="0.45"/>
+    <!-- nodes -->
+    <circle cx="148" cy="-28" r="5" fill="#c4a062"/>
+    <circle cx="-130" cy="36" r="4" fill="#f7f4ef" opacity="0.9"/>
+    <circle cx="42" cy="95" r="3.5" fill="#c4a062" opacity="0.85"/>
+    <circle cx="-70" cy="-88" r="3" fill="#f7f4ef" opacity="0.7"/>
+    <line x1="0" y1="0" x2="148" y2="-28" stroke="#c4a062" stroke-width="1" opacity="0.45"/>
+    <line x1="0" y1="0" x2="-130" y2="36" stroke="#c4a062" stroke-width="1" opacity="0.35"/>
+    <line x1="0" y1="0" x2="42" y2="95" stroke="#c4a062" stroke-width="1" opacity="0.3"/>
+  </g>
+  <rect width="1200" height="630" fill="url(#vignette)"/>
+  <text x="72" y="250" font-family="Georgia, 'Times New Roman', serif" font-size="64" fill="#f7f4ef" letter-spacing="-0.5">SignalOrbit</text>
+  <text x="72" y="330" font-family="ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="36" fill="#c4c8d0">Verified B2B leads, ready to contact.</text>
+  <text x="72" y="520" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#c4a062" letter-spacing="4">SIGNALORBIT.APP</text>
+</svg>

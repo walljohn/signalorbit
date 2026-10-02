@@ -27,10 +27,12 @@ const mono = JetBrains_Mono({
 
 const description = `SignalOrbit finds the businesses that fit what you sell, verifies the decision-maker and their work email, and recommends exactly how to reach each one. Your first ${FREE_LEADS} leads are free.`;
 
+const title = "SignalOrbit — Verified B2B leads";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "SignalOrbit — Verified B2B leads",
+    default: title,
     template: "%s — SignalOrbit",
   },
   description,
@@ -43,17 +45,44 @@ export const metadata: Metadata = {
     "outreach strategy",
   ],
   alternates: { canonical: "/" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   openGraph: {
     type: "website",
     url: SITE.url,
     siteName: SITE.name,
-    title: "SignalOrbit — Verified B2B leads",
+    title,
     description,
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "SignalOrbit — verified B2B leads on a charcoal cinematic field",
+        type: "image/png",
+      },
+    ],
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SignalOrbit — Verified B2B leads",
+    title,
     description,
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "SignalOrbit — verified B2B leads on a charcoal cinematic field",
+      },
+    ],
   },
   robots: {
     index: true,

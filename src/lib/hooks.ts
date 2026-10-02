@@ -59,6 +59,7 @@ export function useRenderTier(): RenderTier | null {
         connection?: NetworkInfoLike;
       };
 
+      // Hard honor reduced motion — never mount WebGL for that preference.
       if (motionMq.matches || nav.connection?.saveData || !hasWebGL()) {
         setTier("static");
         return;
@@ -198,7 +199,7 @@ export function useActiveSection(ids: string[]): string | null {
   return active;
 }
 
-/** Normalized (-1..1) pointer position, damped, for parallax. */
+/** Normalized (-1..1) pointer position for parallax / tilt. */
 export function usePointerVector(enabled: boolean) {
   const vector = useRef({ x: 0, y: 0 });
 
@@ -218,4 +219,76 @@ export function usePointerVector(enabled: boolean) {
   }, [enabled, onPointer]);
 
   return vector;
+}
+
+/**
+ * Scroll progress through the first viewport height, stored in a ref so
+ * consumers (e.g. r3f useFrame) can read it without React re-renders.
+ * Range is roughly 0 at top → 1 at one screen of scroll.
+ */
+export function useScrollProgressRef(enabled = true) {
+  const progress = useRef(0);
+
+  useEffect(() => {
+    if (!enabled) {
+      progress.current = 0;
+      return;
+    }
+
+    const update = () => {
+      const h = Math.max(window.innerHeight, 1);
+      progress.current = Math.min(Math.max(window.scrollY / h, 0), 1.25);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [enabled]);
+
+  return progress;
+}
+
+/**
+ * True after the browser is idle (or a short timeout). Used to defer heavy
+ * WebGL until the static shell has painted.
+ */
+export function useAfterIdle(enabled: boolean, timeoutMs = 900): boolean {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (!enabled) {
+      setReady(false);
+      return;
+    }
+
+    let cancelled = false;
+    const go = () => {
+      if (!cancelled) setReady(true);
+    };
+
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    if (typeof w.requestIdleCallback === "function") {
+      const id = w.requestIdleCallback(go, { timeout: timeoutMs });
+      return () => {
+        cancelled = true;
+        w.cancelIdleCallback?.(id);
+      };
+    }
+
+    const id = window.setTimeout(go, Math.min(timeoutMs, 280));
+    return () => {
+      cancelled = true;
+      window.clearTimeout(id);
+    };
+  }, [enabled, timeoutMs]);
+
+  return ready;
 }
