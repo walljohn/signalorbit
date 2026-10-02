@@ -147,7 +147,7 @@ export function ConsultationForm() {
     "w-full rounded-xl border bg-abyss px-4 py-3 text-[0.95rem] text-ink placeholder:text-dim transition-all duration-300 focus:outline-none";
 
   return (
-    <section id="consultation" className="relative scroll-mt-24 py-28 sm:py-36">
+    <section id="consultation" className="relative scroll-mt-24 py-32 sm:py-40">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-[var(--edge-strong)] to-transparent"
@@ -190,7 +190,7 @@ export function ConsultationForm() {
           </Reveal>
 
           <Reveal delay={110}>
-            <div className="glass rounded-[var(--radius-glass)] p-6 sm:p-9">
+            <div className="glass-panel rounded-[var(--radius-panel)] p-6 sm:p-9">
               {status === "success" ? (
                 <div className="flex min-h-[26rem] flex-col items-start justify-center">
                   <span
@@ -316,7 +316,7 @@ export function ConsultationForm() {
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="group mt-7 inline-flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-signal px-7 py-3.5 text-[0.95rem] font-medium text-white shadow-[0_10px_28px_-12px_rgba(22,98,196,0.65)] transition-all duration-300 hover:bg-signal-deep disabled:cursor-wait disabled:opacity-60 sm:w-auto"
+                    className="group mt-7 inline-flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-full bg-signal px-8 py-3.5 text-[0.95rem] font-medium text-white shadow-[0_12px_32px_-12px_rgba(22,98,196,0.7)] transition-all duration-300 hover:bg-signal-deep hover:shadow-[0_18px_40px_-12px_rgba(22,98,196,0.8)] hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60 disabled:hover:translate-y-0 sm:w-auto"
                   >
                     {status === "submitting" ? "Sending…" : "Request my free leads"}
                     {status === "submitting" ? null : (

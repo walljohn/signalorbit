@@ -24,7 +24,7 @@ function mulberry32(seed: number) {
 /* On white the scene is drawn like a technical diagram: solid ink dots, fine
    lines that fade from accent at the centre to near-paper at the rim, and a
    fog the colour of the page so distance reads as softness, not darkness. */
-const GROUND = "#f7f9fc";
+const GROUND = "#f4f7fb";
 const CORE_COLOR = new THREE.Color("#0b1a2e");
 const NODE_COLOR = new THREE.Color("#1662c4");
 const NODE_DEEP = new THREE.Color("#0b1a2e");
@@ -87,7 +87,7 @@ function Core({ dot }: { dot: THREE.Texture }) {
     <group>
       {/* A faint blue wash instead of a glow — visible on paper, never muddy */}
       <sprite scale={[3.0, 3.0, 3.0]}>
-        <spriteMaterial map={dot} color={NODE_COLOR} transparent opacity={0.12} depthWrite={false} />
+        <spriteMaterial map={dot} color={NODE_COLOR} transparent opacity={0.16} depthWrite={false} />
       </sprite>
 
       <mesh>
@@ -288,7 +288,7 @@ export default function OrbitScene({
       gl={{ antialias: true, powerPreference: "high-performance", alpha: true }}
       style={{ pointerEvents: "none" }}
     >
-      <fog attach="fog" args={[GROUND, 13, 34]} />
+      <fog attach="fog" args={[GROUND, 12, 36]} />
       <DriftingCamera />
       <System tier={tier} split={split} />
     </Canvas>

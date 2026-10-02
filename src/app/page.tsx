@@ -14,15 +14,22 @@ export default function Home() {
       <Hero />
       <Process />
       <Divider />
-      <EmailDemo />
+      <div className="section-band">
+        <EmailDemo />
+      </div>
       <Divider />
       <Services />
       <Offer />
       <Divider />
-      <Onboarding />
+      <div className="section-band">
+        <Onboarding />
+      </div>
       <Divider />
       <Faq />
-      <ConsultationForm />
+      <div className="relative overflow-hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 mesh-aurora opacity-70" />
+        <ConsultationForm />
+      </div>
     </>
   );
 }

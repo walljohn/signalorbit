@@ -62,7 +62,7 @@ export function EmailDemo() {
   const typing = typed < email.length;
 
   return (
-    <section id="demo" ref={ref} className="relative scroll-mt-24 py-28 sm:py-36">
+    <section id="demo" ref={ref} className="relative scroll-mt-24 py-32 sm:py-40">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
         <Reveal>
           <SectionHeading
@@ -73,7 +73,7 @@ export function EmailDemo() {
         </Reveal>
 
         <Reveal delay={80}>
-          <p className="mt-7 inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 rounded-2xl border border-amber-300 sm:rounded-full bg-amber-50 px-4 py-2 text-[0.8rem] text-amber-900">
+          <p className="mt-8 inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 rounded-2xl border border-amber-300/80 bg-amber-50/90 px-4 py-2.5 text-[0.8rem] text-amber-900 shadow-[0_8px_24px_-18px_rgba(180,120,20,0.45)] sm:rounded-full">
             <span className="font-mono text-[10px] tracking-[0.22em] text-amber-700 uppercase">
               Demo
             </span>
@@ -82,10 +82,10 @@ export function EmailDemo() {
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
+        <div className="mt-14 grid gap-7 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
           {/* ---------- Record ---------- */}
           <Reveal>
-            <div className="glass h-full rounded-[var(--radius-glass)] p-6 sm:p-8">
+            <div className="glass-panel h-full rounded-[var(--radius-panel)] p-6 sm:p-8">
               <div
                 role="tablist"
                 aria-label="Sample prospect"
@@ -101,7 +101,7 @@ export function EmailDemo() {
                     className={[
                       "cursor-pointer rounded-full px-3.5 py-1.5 text-[0.8rem] transition-all duration-300",
                       i === prospectIndex
-                        ? "bg-signal-tint text-signal ring-1 ring-signal/30"
+                        ? "bg-signal-tint text-signal ring-1 ring-signal/30 shadow-[0_6px_16px_-10px_rgba(22,98,196,0.55)]"
                         : "text-mist hover:bg-void hover:text-ink",
                     ].join(" ")}
                   >
@@ -110,14 +110,14 @@ export function EmailDemo() {
                 ))}
               </div>
 
-              <div className="mt-7 border-t border-[var(--edge)] pt-7">
+              <div className="mt-8 border-t border-[var(--edge)] pt-7">
                 <p className="font-mono text-[10px] tracking-[0.24em] text-dim uppercase">
                   Prospect record
                 </p>
-                <p className="mt-3 text-[1.22rem] font-medium tracking-[-0.02em] text-ink">
+                <p className="mt-3 text-[1.28rem] font-medium tracking-[-0.025em] text-ink">
                   {prospect.contact}
                 </p>
-                <p className="mt-1 text-[0.92rem] text-mist">
+                <p className="mt-1.5 text-[0.94rem] text-mist">
                   {prospect.role} &middot; {prospect.company}
                 </p>
                 <p className="mt-0.5 text-[0.86rem] text-dim">{prospect.location}</p>
@@ -137,8 +137,8 @@ export function EmailDemo() {
                           className={[
                             "flex cursor-pointer gap-3.5 rounded-xl border p-3.5 transition-all duration-300",
                             on
-                              ? "border-signal/35 bg-signal-tint"
-                              : "border-[var(--edge)] bg-void hover:border-[var(--edge-strong)]",
+                              ? "border-signal/35 bg-signal-tint shadow-[0_8px_20px_-16px_rgba(22,98,196,0.5)]"
+                              : "border-[var(--edge)] bg-void/70 hover:border-[var(--edge-strong)]",
                           ].join(" ")}
                         >
                           <input
@@ -179,10 +179,10 @@ export function EmailDemo() {
 
           {/* ---------- Draft ---------- */}
           <Reveal delay={120}>
-            <div className="glass h-full overflow-hidden rounded-[var(--radius-glass)]">
-              <div className="flex items-center justify-between gap-4 border-b border-[var(--edge)] px-6 py-4 sm:px-8">
+            <div className="glass-panel h-full overflow-hidden rounded-[var(--radius-panel)]">
+              <div className="flex items-center justify-between gap-4 border-b border-[var(--edge)] bg-gradient-to-r from-signal-tint/40 to-transparent px-6 py-4 sm:px-8">
                 <div className="flex items-center gap-2">
-                  <span aria-hidden className="h-2 w-2 rounded-full bg-signal/70" />
+                  <span aria-hidden className="h-2 w-2 rounded-full bg-signal/70 shadow-[0_0_0_3px_rgba(22,98,196,0.15)]" />
                   <span className="font-mono text-[10px] tracking-[0.24em] text-dim uppercase">
                     Recommended approach
                   </span>
