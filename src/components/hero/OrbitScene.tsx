@@ -7,10 +7,6 @@ import * as THREE from "three";
 import { usePointerVector } from "@/lib/hooks";
 import type { RenderTier } from "@/lib/hooks";
 
-/* ------------------------------------------------------------------ *
- * Deterministic pseudo-randomness so the constellation looks the same
- * on every load rather than reshuffling on each mount.
- * ------------------------------------------------------------------ */
 function mulberry32(seed: number) {
   let a = seed >>> 0;
   return () => {
@@ -21,15 +17,13 @@ function mulberry32(seed: number) {
   };
 }
 
-/* On white the scene is drawn like a technical diagram: solid ink dots, fine
-   lines that fade from accent at the centre to near-paper at the rim, and a
-   fog the colour of the page so distance reads as softness, not darkness. */
-const GROUND = "#f7f9fc";
-const CORE_COLOR = new THREE.Color("#0b1a2e");
-const NODE_COLOR = new THREE.Color("#1662c4");
-const NODE_DEEP = new THREE.Color("#0b1a2e");
-const LINK_NEAR = new THREE.Color("#1662c4");
-const LINK_FAR = new THREE.Color("#a9c0da");
+/* Dark cinematic palette — bright nodes on charcoal, not soft blue paper diagram */
+const GROUND = "#07090d";
+const CORE_COLOR = new THREE.Color("#f7f4ef");
+const NODE_COLOR = new THREE.Color("#c4a062");
+const NODE_DEEP = new THREE.Color("#f7f4ef");
+const LINK_NEAR = new THREE.Color("#c4a062");
+const LINK_FAR = new THREE.Color("#3a3428");
 
 type RingSpec = {
   radius: number;
@@ -47,7 +41,6 @@ function ringSpecs(tier: RenderTier): RingSpec[] {
   ];
 }
 
-/** A soft-edged disc used as the alpha mask for every point sprite. */
 function useDotTexture() {
   return useMemo(() => {
     const size = 64;
@@ -69,9 +62,6 @@ function useDotTexture() {
   }, []);
 }
 
-/* ------------------------------------------------------------------ *
- * The client business at the centre of the system.
- * ------------------------------------------------------------------ */
 function Core({ dot }: { dot: THREE.Texture }) {
   const shell = useRef<THREE.Mesh>(null);
 
@@ -85,9 +75,8 @@ function Core({ dot }: { dot: THREE.Texture }) {
 
   return (
     <group>
-      {/* A faint blue wash instead of a glow — visible on paper, never muddy */}
-      <sprite scale={[3.0, 3.0, 3.0]}>
-        <spriteMaterial map={dot} color={NODE_COLOR} transparent opacity={0.12} depthWrite={false} />
+      <sprite scale={[3.4, 3.4, 3.4]}>
+        <spriteMaterial map={dot} color={NODE_COLOR} transparent opacity={0.22} depthWrite={false} />
       </sprite>
 
       <mesh>
@@ -97,25 +86,21 @@ function Core({ dot }: { dot: THREE.Texture }) {
 
       <mesh ref={shell}>
         <icosahedronGeometry args={[0.66, 1]} />
-        <meshBasicMaterial color={NODE_COLOR} wireframe transparent opacity={0.38} toneMapped={false} />
+        <meshBasicMaterial color={NODE_COLOR} wireframe transparent opacity={0.45} toneMapped={false} />
       </mesh>
 
       <mesh rotation={[Math.PI / 2.1, 0, 0.3]}>
         <torusGeometry args={[1.15, 0.005, 8, 128]} />
-        <meshBasicMaterial color={NODE_COLOR} transparent opacity={0.45} toneMapped={false} />
+        <meshBasicMaterial color={NODE_COLOR} transparent opacity={0.5} toneMapped={false} />
       </mesh>
       <mesh rotation={[Math.PI / 1.6, 0.7, -0.2]}>
         <torusGeometry args={[1.42, 0.004, 8, 128]} />
-        <meshBasicMaterial color={NODE_COLOR} transparent opacity={0.28} toneMapped={false} />
+        <meshBasicMaterial color={NODE_COLOR} transparent opacity={0.32} toneMapped={false} />
       </mesh>
     </group>
   );
 }
 
-/* ------------------------------------------------------------------ *
- * One orbital ring: prospect nodes, their links to the centre, and the
- * signal pulses travelling inward along those links.
- * ------------------------------------------------------------------ */
 function Ring({ spec, seed, dot }: { spec: RingSpec; seed: number; dot: THREE.Texture }) {
   const group = useRef<THREE.Group>(null);
   const pulses = useRef<THREE.Points>(null);
@@ -139,7 +124,6 @@ function Ring({ spec, seed, dot }: { spec: RingSpec; seed: number; dot: THREE.Te
       });
     }
 
-    // Links: one segment per node, strongest where it meets the centre.
     const positions = new Float32Array(nodes.length * 6);
     const colors = new Float32Array(nodes.length * 6);
     nodes.forEach((node, i) => {
@@ -175,7 +159,6 @@ function Ring({ spec, seed, dot }: { spec: RingSpec; seed: number; dot: THREE.Te
     const array = attribute.array as Float32Array;
 
     for (let i = 0; i < nodes.length; i += 1) {
-      // Travel outward-to-inward: the prospect signalling the business.
       const raw = (t * 0.13 + offsets[i]) % 1;
       const eased = raw * raw * (3 - 2 * raw);
       const k = 1 - eased;
@@ -190,14 +173,14 @@ function Ring({ spec, seed, dot }: { spec: RingSpec; seed: number; dot: THREE.Te
   return (
     <group ref={group} rotation={spec.tilt}>
       <lineSegments geometry={linkGeometry}>
-        <lineBasicMaterial vertexColors transparent opacity={0.78} depthWrite={false} toneMapped={false} />
+        <lineBasicMaterial vertexColors transparent opacity={0.7} depthWrite={false} toneMapped={false} />
       </lineSegments>
 
       <points ref={pulses} geometry={pulseGeometry}>
         <pointsMaterial
           map={dot}
           color={NODE_COLOR}
-          size={0.075}
+          size={0.085}
           sizeAttenuation
           transparent
           opacity={0.95}
@@ -216,33 +199,27 @@ function Ring({ spec, seed, dot }: { spec: RingSpec; seed: number; dot: THREE.Te
   );
 }
 
-/* ------------------------------------------------------------------ *
- * Scene root: cursor parallax, cinematic drift, responsive framing.
- * ------------------------------------------------------------------ */
-function System({ tier, split }: { tier: RenderTier; split: boolean }) {
+/** Hero mode: centered, large, cinematic. */
+function System({ tier }: { tier: RenderTier }) {
   const outer = useRef<THREE.Group>(null);
   const dot = useDotTexture();
   const pointer = usePointerVector(true);
   const specs = useMemo(() => ringSpecs(tier), [tier]);
   const { viewport } = useThree();
 
-  // Nudge the system off-centre on wide layouts so the headline column keeps
-  // clean space, and drop it low on narrow ones so text never sits over it.
-  const offsetX = split ? Math.min(viewport.width * 0.3, 4.2) : 0;
-  const offsetY = split ? 0 : -viewport.height * 0.2;
-  const scale = split ? 1 : 0.58;
+  const scale = Math.min(1.15, Math.max(0.72, viewport.width / 14));
 
   useFrame((_, delta) => {
     if (!outer.current) return;
     const damp = 1 - Math.pow(0.0015, delta);
-    const targetY = pointer.current.x * 0.26;
-    const targetX = pointer.current.y * 0.16;
+    const targetY = pointer.current.x * 0.22;
+    const targetX = pointer.current.y * 0.14;
     outer.current.rotation.y += (targetY - outer.current.rotation.y) * damp;
     outer.current.rotation.x += (targetX - outer.current.rotation.x) * damp;
   });
 
   return (
-    <group position={[offsetX, offsetY, 0]} scale={scale}>
+    <group position={[0, 0.15, 0]} scale={scale}>
       <group ref={outer}>
         <Core dot={dot} />
         {specs.map((spec, i) => (
@@ -253,7 +230,6 @@ function System({ tier, split }: { tier: RenderTier; split: boolean }) {
   );
 }
 
-/** Slow breathing applied to the camera for a cinematic feel. */
 function DriftingCamera() {
   const camera = useRef<THREE.PerspectiveCamera>(null);
 
@@ -261,23 +237,24 @@ function DriftingCamera() {
     const cam = camera.current;
     if (!cam) return;
     const t = clock.elapsedTime;
-    cam.position.y = 0.35 + Math.sin(t * 0.19) * 0.16;
-    cam.position.x = Math.sin(t * 0.11) * 0.22;
+    cam.position.y = 0.2 + Math.sin(t * 0.19) * 0.12;
+    cam.position.x = Math.sin(t * 0.11) * 0.18;
     cam.lookAt(0, 0, 0);
   });
 
   return (
-    <PerspectiveCamera ref={camera} makeDefault position={[0, 0.35, 9.6]} fov={42} near={0.1} far={60} />
+    <PerspectiveCamera ref={camera} makeDefault position={[0, 0.2, 10.2]} fov={40} near={0.1} far={60} />
   );
 }
 
 export default function OrbitScene({
   tier,
-  split,
   paused,
 }: {
   tier: RenderTier;
-  split: boolean;
+  /** Kept for API compatibility; hero is always centered. */
+  mode?: "hero";
+  split?: boolean;
   paused: boolean;
 }) {
   return (
@@ -288,9 +265,9 @@ export default function OrbitScene({
       gl={{ antialias: true, powerPreference: "high-performance", alpha: true }}
       style={{ pointerEvents: "none" }}
     >
-      <fog attach="fog" args={[GROUND, 13, 34]} />
+      <fog attach="fog" args={[GROUND, 14, 40]} />
       <DriftingCamera />
-      <System tier={tier} split={split} />
+      <System tier={tier} />
     </Canvas>
   );
 }

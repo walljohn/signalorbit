@@ -6,23 +6,26 @@ import { Offer } from "@/components/Offer";
 import { Onboarding } from "@/components/Onboarding";
 import { Faq } from "@/components/Faq";
 import { ConsultationForm } from "@/components/ConsultationForm";
-import { Divider } from "@/components/ui";
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <Process />
-      <Divider />
-      <EmailDemo />
-      <Divider />
-      <Services />
-      <Offer />
-      <Divider />
-      <Onboarding />
-      <Divider />
-      <Faq />
-      <ConsultationForm />
+      <div className="band-paper">
+        <Process />
+      </div>
+      <div className="band-dark">
+        <EmailDemo />
+      </div>
+      <div className="band-paper">
+        <Services />
+        <Offer />
+        <Onboarding />
+        <Faq />
+      </div>
+      <div className="band-dark">
+        <ConsultationForm />
+      </div>
     </>
   );
 }

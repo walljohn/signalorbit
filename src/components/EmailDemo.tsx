@@ -23,15 +23,11 @@ export function EmailDemo() {
   const email = useMemo(() => composeDemoEmail(prospect, selected), [prospect, selected]);
   const animate = inView && !reduced;
 
-  // Progress is stored against the draft it belongs to, so a new draft starts
-  // from zero by derivation rather than by resetting state inside an effect.
   const [progress, setProgress] = useState<{ draft: string; count: number }>({
     draft: "",
     count: 0,
   });
 
-  // Retype whenever the composed draft changes — that is the point of the demo:
-  // change what is verified, and the letter changes with it.
   useEffect(() => {
     if (!animate || !email) return;
 
@@ -62,10 +58,11 @@ export function EmailDemo() {
   const typing = typed < email.length;
 
   return (
-    <section id="demo" ref={ref} className="relative scroll-mt-24 py-28 sm:py-36">
+    <section id="demo" ref={ref} className="relative scroll-mt-24 py-28 sm:py-36 lg:py-44">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
         <Reveal>
           <SectionHeading
+            tone="dark"
             eyebrow="Interactive demo"
             title="Verified facts in. A recommended approach out."
             lede="Every lead we deliver comes with a recommended route and a draft opener built from what we verified. Toggle the facts and watch the draft change. Remove them all and there is nothing honest left to suggest, so in a real delivery that lead goes back for research."
@@ -73,8 +70,8 @@ export function EmailDemo() {
         </Reveal>
 
         <Reveal delay={80}>
-          <p className="mt-7 inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 rounded-2xl border border-amber-300 sm:rounded-full bg-amber-50 px-4 py-2 text-[0.8rem] text-amber-900">
-            <span className="font-mono text-[10px] tracking-[0.22em] text-amber-700 uppercase">
+          <p className="mt-8 inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 border border-amber-500/35 bg-amber-500/10 px-4 py-2.5 text-[0.8rem] text-amber-100/90">
+            <span className="font-mono text-[10px] tracking-[0.22em] text-amber-300/90 uppercase">
               Demo
             </span>
             Fictional company, fictional contact, illustrative output. Not a customer, not a real
@@ -82,14 +79,13 @@ export function EmailDemo() {
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]">
-          {/* ---------- Record ---------- */}
+        <div className="mt-16 grid gap-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-8">
           <Reveal>
-            <div className="glass h-full rounded-[var(--radius-glass)] p-6 sm:p-8">
+            <div className="stage-frame-dark h-full p-6 sm:p-8">
               <div
                 role="tablist"
                 aria-label="Sample prospect"
-                className="flex flex-wrap gap-1.5"
+                className="flex flex-wrap gap-2"
               >
                 {DEMO_PROSPECTS.map((p, i) => (
                   <button
@@ -99,10 +95,10 @@ export function EmailDemo() {
                     aria-selected={i === prospectIndex}
                     onClick={() => switchProspect(i)}
                     className={[
-                      "cursor-pointer rounded-full px-3.5 py-1.5 text-[0.8rem] transition-all duration-300",
+                      "cursor-pointer px-3.5 py-1.5 text-[0.8rem] transition-all duration-300",
                       i === prospectIndex
-                        ? "bg-signal-tint text-signal ring-1 ring-signal/30"
-                        : "text-mist hover:bg-void hover:text-ink",
+                        ? "bg-cream text-ink"
+                        : "border border-[var(--edge-dark)] text-fog hover:border-[var(--edge-dark-strong)] hover:text-cream",
                     ].join(" ")}
                   >
                     {p.company}
@@ -110,14 +106,14 @@ export function EmailDemo() {
                 ))}
               </div>
 
-              <div className="mt-7 border-t border-[var(--edge)] pt-7">
+              <div className="mt-8 border-t border-[var(--edge-dark)] pt-7">
                 <p className="font-mono text-[10px] tracking-[0.24em] text-dim uppercase">
                   Prospect record
                 </p>
-                <p className="mt-3 text-[1.22rem] font-medium tracking-[-0.02em] text-ink">
+                <p className="mt-3 text-[1.28rem] font-medium tracking-[-0.025em] text-cream">
                   {prospect.contact}
                 </p>
-                <p className="mt-1 text-[0.92rem] text-mist">
+                <p className="mt-1.5 text-[0.94rem] text-fog">
                   {prospect.role} &middot; {prospect.company}
                 </p>
                 <p className="mt-0.5 text-[0.86rem] text-dim">{prospect.location}</p>
@@ -135,10 +131,10 @@ export function EmailDemo() {
                       <li key={fact.id}>
                         <label
                           className={[
-                            "flex cursor-pointer gap-3.5 rounded-xl border p-3.5 transition-all duration-300",
+                            "flex cursor-pointer gap-3.5 border p-3.5 transition-all duration-300",
                             on
-                              ? "border-signal/35 bg-signal-tint"
-                              : "border-[var(--edge)] bg-void hover:border-[var(--edge-strong)]",
+                              ? "border-ember/45 bg-ember/10"
+                              : "border-[var(--edge-dark)] hover:border-[var(--edge-dark-strong)]",
                           ].join(" ")}
                         >
                           <input
@@ -150,18 +146,18 @@ export function EmailDemo() {
                           <span
                             aria-hidden
                             className={[
-                              "mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-[5px] border transition-all duration-200",
-                              on ? "border-signal bg-signal" : "border-[var(--edge-strong)] bg-abyss",
+                              "mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center border transition-all duration-200",
+                              on ? "border-ember bg-ember" : "border-[var(--edge-dark-strong)]",
                             ].join(" ")}
                           >
                             {on ? (
-                              <svg viewBox="0 0 12 12" className="h-2.5 w-2.5 text-white" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                              <svg viewBox="0 0 12 12" className="h-2.5 w-2.5 text-ink" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M2 6.2 4.8 9 10 3.4" />
                               </svg>
                             ) : null}
                           </span>
                           <span className="min-w-0">
-                            <span className={`block text-[0.9rem] leading-snug ${on ? "text-ink" : "text-mist"}`}>
+                            <span className={`block text-[0.9rem] leading-snug ${on ? "text-cream" : "text-fog"}`}>
                               {fact.label}
                             </span>
                             <span className="mt-1 block font-mono text-[10px] tracking-[0.14em] text-dim uppercase">
@@ -177,12 +173,11 @@ export function EmailDemo() {
             </div>
           </Reveal>
 
-          {/* ---------- Draft ---------- */}
           <Reveal delay={120}>
-            <div className="glass h-full overflow-hidden rounded-[var(--radius-glass)]">
-              <div className="flex items-center justify-between gap-4 border-b border-[var(--edge)] px-6 py-4 sm:px-8">
+            <div className="stage-frame-dark h-full overflow-hidden">
+              <div className="flex items-center justify-between gap-4 border-b border-[var(--edge-dark)] px-6 py-4 sm:px-8">
                 <div className="flex items-center gap-2">
-                  <span aria-hidden className="h-2 w-2 rounded-full bg-signal/70" />
+                  <span aria-hidden className="h-1.5 w-1.5 bg-ember" />
                   <span className="font-mono text-[10px] tracking-[0.24em] text-dim uppercase">
                     Recommended approach
                   </span>
@@ -192,31 +187,31 @@ export function EmailDemo() {
                 </span>
               </div>
 
-              <div className="space-y-2 border-b border-[var(--edge)] px-6 py-5 text-[0.86rem] sm:px-8">
+              <div className="space-y-2 border-b border-[var(--edge-dark)] px-6 py-5 text-[0.86rem] sm:px-8">
                 <p className="flex gap-3">
                   <span className="w-14 shrink-0 text-dim">Route</span>
-                  <span className="font-medium text-ink">{prospect.route}</span>
+                  <span className="font-medium text-cream">{prospect.route}</span>
                 </p>
                 <p className="flex gap-3 pb-3">
                   <span className="w-14 shrink-0 text-dim">Why</span>
-                  <span className="text-mist">{prospect.routeReason}</span>
+                  <span className="text-fog">{prospect.routeReason}</span>
                 </p>
-                <p className="flex gap-3 border-t border-[var(--edge)] pt-3">
+                <p className="flex gap-3 border-t border-[var(--edge-dark)] pt-3">
                   <span className="w-14 shrink-0 text-dim">From</span>
-                  <span className="text-mist">
+                  <span className="text-fog">
                     {DEMO_SENDER.name} &lt;alex@meridian-systems.example&gt;
                   </span>
                 </p>
                 <p className="flex gap-3">
                   <span className="w-14 shrink-0 text-dim">To</span>
-                  <span className="text-mist">
+                  <span className="text-fog">
                     {prospect.contact} &lt;{prospect.firstName.toLowerCase()}@
                     {prospect.id}.example&gt;
                   </span>
                 </p>
                 <p className="flex gap-3">
                   <span className="w-14 shrink-0 text-dim">Subject</span>
-                  <span className="text-ink">{prospect.subject}</span>
+                  <span className="text-cream">{prospect.subject}</span>
                 </p>
               </div>
 
@@ -224,16 +219,16 @@ export function EmailDemo() {
                 {email ? (
                   <p
                     aria-hidden
-                    className="min-h-[19rem] text-[0.95rem] leading-[1.78] whitespace-pre-wrap text-mist"
+                    className="min-h-[19rem] text-[0.95rem] leading-[1.78] whitespace-pre-wrap text-fog"
                   >
                     {visible}
                     {typing ? (
-                      <span className="ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[0.18em] bg-signal align-baseline motion-safe:animate-[caret_1.05s_steps(1)_infinite]" />
+                      <span className="ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[0.18em] bg-ember align-baseline motion-safe:animate-[caret_1.05s_steps(1)_infinite]" />
                     ) : null}
                   </p>
                 ) : (
                   <div className="flex min-h-[19rem] flex-col items-start justify-center gap-3">
-                    <p className="text-[1.02rem] text-ink">Nothing verified, nothing to say.</p>
+                    <p className="text-[1.02rem] text-cream">Nothing verified, nothing to say.</p>
                     <p className="max-w-sm text-[0.92rem] leading-relaxed text-dim">
                       With no confirmed facts on the record, there is no honest way to personalise
                       this approach. In a real delivery the lead goes back for research instead of
@@ -242,7 +237,6 @@ export function EmailDemo() {
                   </div>
                 )}
 
-                {/* Screen readers get the finished draft once, instead of every keystroke. */}
                 <p className="sr-only" aria-live="polite">
                   {email ? `Recommended route: ${prospect.route}. Draft opener: ${email}` : "No verified facts selected. No approach drafted."}
                 </p>

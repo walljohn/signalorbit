@@ -1,10 +1,5 @@
 /**
- * Static stand-in for the WebGL hero.
- *
- * Rendered instead of the canvas when the visitor has asked for reduced
- * motion, is on a data saver connection, has no WebGL context available, or is
- * on very low-powered hardware. It is deliberately motionless and ships as
- * inline SVG, so it costs nothing beyond the markup.
+ * Static stand-in for the WebGL hero on reduced-motion / low-power clients.
  */
 
 type Node = { x: number; y: number; r: number; o: number };
@@ -28,7 +23,6 @@ function ringNodes(ring: (typeof RINGS)[number]): Node[] {
     const ex = Math.cos(t) * ring.rx;
     const ey = Math.sin(t) * ring.ry;
     return {
-      // Rounded so server and client serialize the same string.
       x: Math.round((CX + ex * cos - ey * sin) * 100) / 100,
       y: Math.round((CY + ex * sin + ey * cos) * 100) / 100,
       r: i % 4 === 0 ? 4.6 : 3,
@@ -37,7 +31,17 @@ function ringNodes(ring: (typeof RINGS)[number]): Node[] {
   });
 }
 
-export function OrbitFallback({ className = "" }: { className?: string }) {
+export function OrbitFallback({
+  className = "",
+  theme = "dark",
+}: {
+  className?: string;
+  theme?: "dark" | "light";
+}) {
+  const accent = theme === "dark" ? "#c4a062" : "#1662c4";
+  const core = theme === "dark" ? "#f7f4ef" : "#0b1a2e";
+  const washOpacity = theme === "dark" ? 0.18 : 0.14;
+
   return (
     <svg
       viewBox="0 0 600 600"
@@ -47,13 +51,13 @@ export function OrbitFallback({ className = "" }: { className?: string }) {
     >
       <defs>
         <radialGradient id="so-wash" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#1662c4" stopOpacity="0.14" />
-          <stop offset="60%" stopColor="#1662c4" stopOpacity="0.05" />
-          <stop offset="100%" stopColor="#1662c4" stopOpacity="0" />
+          <stop offset="0%" stopColor={accent} stopOpacity={washOpacity} />
+          <stop offset="60%" stopColor={accent} stopOpacity={washOpacity * 0.35} />
+          <stop offset="100%" stopColor={accent} stopOpacity="0" />
         </radialGradient>
         <linearGradient id="so-link" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#2f76cd" stopOpacity="0.85" />
-          <stop offset="100%" stopColor="#2f76cd" stopOpacity="0.12" />
+          <stop offset="0%" stopColor={accent} stopOpacity="0.85" />
+          <stop offset="100%" stopColor={accent} stopOpacity="0.12" />
         </linearGradient>
       </defs>
 
@@ -68,8 +72,8 @@ export function OrbitFallback({ className = "" }: { className?: string }) {
             ry={ring.ry}
             transform={`rotate(${ring.rotate} ${CX} ${CY})`}
             fill="none"
-            stroke="#1662c4"
-            strokeOpacity={0.22}
+            stroke={accent}
+            strokeOpacity={0.28}
             strokeWidth={1}
           />
           {ringNodes(ring).map((node, ni) => (
@@ -82,15 +86,21 @@ export function OrbitFallback({ className = "" }: { className?: string }) {
                 stroke="url(#so-link)"
                 strokeWidth={0.9}
               />
-              <circle cx={node.x} cy={node.y} r={node.r} fill={ni % 4 === 0 ? "#0b1a2e" : "#1662c4"} opacity={node.o} />
+              <circle
+                cx={node.x}
+                cy={node.y}
+                r={node.r}
+                fill={ni % 4 === 0 ? core : accent}
+                opacity={node.o}
+              />
             </g>
           ))}
         </g>
       ))}
 
-      <circle cx={CX} cy={CY} r={44} fill="none" stroke="#1662c4" strokeOpacity={0.3} strokeWidth={1} />
-      <circle cx={CX} cy={CY} r={62} fill="none" stroke="#1662c4" strokeOpacity={0.18} strokeWidth={1} />
-      <circle cx={CX} cy={CY} r={9} fill="#0b1a2e" />
+      <circle cx={CX} cy={CY} r={44} fill="none" stroke={accent} strokeOpacity={0.35} strokeWidth={1} />
+      <circle cx={CX} cy={CY} r={62} fill="none" stroke={accent} strokeOpacity={0.2} strokeWidth={1} />
+      <circle cx={CX} cy={CY} r={9} fill={core} />
     </svg>
   );
 }

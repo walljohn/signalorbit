@@ -1,10 +1,20 @@
 import Link from "next/link";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 
-export function Eyebrow({ children }: { children: ReactNode }) {
+export function Eyebrow({
+  children,
+  tone = "dark",
+}: {
+  children: ReactNode;
+  tone?: "dark" | "light";
+}) {
+  const color = tone === "dark" ? "text-ember" : "text-ember";
+  const rule = tone === "dark" ? "bg-ember/70" : "bg-ember/80";
   return (
-    <span className="inline-flex items-center gap-2.5 font-mono text-[11px] font-medium tracking-[0.24em] text-signal uppercase">
-      <span aria-hidden className="h-px w-6 bg-signal/45" />
+    <span
+      className={`inline-flex items-center gap-3 font-mono text-[11px] font-medium tracking-[0.32em] uppercase ${color}`}
+    >
+      <span aria-hidden className={`h-px w-8 ${rule}`} />
       {children}
     </span>
   );
@@ -12,18 +22,21 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 
 type CtaProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
-  variant?: "primary" | "ghost";
+  variant?: "solid" | "ghost" | "invert";
   children: ReactNode;
 };
 
-export function Cta({ href, variant = "primary", children, className = "", ...rest }: CtaProps) {
+/** Solid cream on dark / ink on light — fewer, stronger CTAs (Apple / Lightship). */
+export function Cta({ href, variant = "solid", children, className = "", ...rest }: CtaProps) {
   const base =
-    "group relative inline-flex items-center justify-center gap-2.5 rounded-full px-7 py-3.5 text-[0.94rem] font-medium transition-all duration-300 will-change-transform";
+    "group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-[0.92rem] font-medium tracking-[-0.01em] transition-colors duration-300";
 
   const styles =
-    variant === "primary"
-      ? "bg-signal text-white shadow-[0_10px_28px_-12px_rgba(22,98,196,0.65)] hover:bg-signal-deep hover:shadow-[0_16px_36px_-12px_rgba(22,98,196,0.75)] hover:-translate-y-0.5"
-      : "border border-[var(--edge-strong)] bg-abyss text-ink hover:border-signal/45 hover:bg-signal-tint hover:-translate-y-0.5";
+    variant === "solid"
+      ? "bg-cream text-ink hover:bg-white"
+      : variant === "invert"
+        ? "bg-ink text-cream hover:bg-void"
+        : "border border-current/30 text-inherit hover:border-current/60";
 
   return (
     <Link href={href} className={`${base} ${styles} ${className}`} {...rest}>
@@ -36,32 +49,43 @@ export function SectionHeading({
   eyebrow,
   title,
   lede,
+  tone = "light",
   align = "left",
 }: {
   eyebrow: string;
   title: ReactNode;
   lede?: ReactNode;
+  tone?: "dark" | "light";
   align?: "left" | "center";
 }) {
+  const titleColor = tone === "dark" ? "text-cream" : "text-ink";
+  const ledeColor = tone === "dark" ? "text-fog" : "text-mist";
+
   return (
-    <div className={align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
-      <Eyebrow>{eyebrow}</Eyebrow>
-      <h2 className="mt-5 text-balance text-[2rem] leading-[1.12] font-semibold tracking-[-0.025em] text-ink sm:text-[2.6rem]">
+    <div className={align === "center" ? "mx-auto max-w-4xl text-center" : "max-w-4xl"}>
+      <Eyebrow tone={tone}>{eyebrow}</Eyebrow>
+      <h2
+        className={`display mt-7 text-balance text-[2.6rem] sm:text-[3.5rem] lg:text-[4.25rem] ${titleColor}`}
+      >
         {title}
       </h2>
       {lede ? (
-        <p className="mt-5 text-pretty text-[1.02rem] leading-[1.7] text-mist">{lede}</p>
+        <p
+          className={`mt-7 max-w-2xl text-pretty text-[1.05rem] leading-[1.75] sm:text-[1.12rem] ${ledeColor} ${align === "center" ? "mx-auto" : ""}`}
+        >
+          {lede}
+        </p>
       ) : null}
     </div>
   );
 }
 
-/** Hairline rule that fades at both ends — used to separate major sections. */
-export function Divider() {
+export function Divider({ tone = "light" }: { tone?: "dark" | "light" }) {
+  const via = tone === "dark" ? "via-[var(--edge-dark-strong)]" : "via-[var(--edge-light-strong)]";
   return (
     <div
       aria-hidden
-      className="mx-auto h-px w-full max-w-6xl bg-gradient-to-r from-transparent via-[var(--edge-strong)] to-transparent"
+      className={`mx-auto h-px w-full max-w-6xl bg-gradient-to-r from-transparent ${via} to-transparent`}
     />
   );
 }

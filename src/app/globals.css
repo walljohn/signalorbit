@@ -1,61 +1,71 @@
 @import "tailwindcss";
 
 @theme {
-  /* Surfaces — a cool off-white ground with pure white panels on top */
-  --color-void: #f7f9fc;
-  --color-abyss: #ffffff;
-  --color-slate-deep: #eef3f9;
+  /* Surfaces — charcoal cinema + warm paper (Lightship / Apple rhythm) */
+  --color-void: #07090d;
+  --color-paper: #f3f0ea;
+  --color-panel: #faf8f4;
+  --color-ink: #0a0c10;
+  --color-cream: #f7f4ef;
+  --color-mist: #5c616c;
+  --color-dim: #8b909c;
+  --color-fog: #c4c8d0;
 
-  /* Type — deep navy rather than black, which reads warmer on white */
-  --color-ink: #0b1a2e;
-  --color-mist: #41556f;
-  --color-dim: #6c8099;
-
-  /* Accent — the same electric blue, darkened to stay legible on white */
-  --color-signal: #1662c4;
-  --color-signal-deep: #0e4b9c;
-  --color-signal-tint: #e9f1fc;
+  /* Accent — used sparingly as solid marks, never as soft radial identity */
+  --color-signal: #e8e4dc;
+  --color-signal-ink: #0a0c10;
+  --color-ember: #c4a062;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-display-face), var(--font-inter), ui-serif, Georgia, serif;
   --font-mono: var(--font-mono-face), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  --radius-glass: 18px;
+  --radius-panel: 2px;
+  --radius-control: 2px;
 
-  --animate-drift: drift 26s ease-in-out infinite;
   --animate-caret: caret 1.05s steps(1) infinite;
+  --animate-float-slow: float-slow 12s ease-in-out infinite;
+  --animate-rise: rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
 
-  @keyframes drift {
-    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-    50% { transform: translate3d(0, -18px, 0) scale(1.04); }
-  }
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(28px); }
     to { opacity: 1; transform: translateY(0); }
   }
   @keyframes caret {
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0; }
   }
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes line-grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
 }
 
 :root {
-  color-scheme: light;
-  --edge: rgba(11, 26, 46, 0.1);
-  --edge-strong: rgba(11, 26, 46, 0.18);
-  --card-shadow: 0 1px 2px rgba(11, 26, 46, 0.04), 0 14px 34px -22px rgba(11, 26, 46, 0.22);
-  --card-shadow-lift: 0 1px 2px rgba(11, 26, 46, 0.05), 0 22px 46px -24px rgba(11, 26, 46, 0.28);
+  color-scheme: dark light;
+  --edge-dark: rgba(247, 244, 239, 0.12);
+  --edge-dark-strong: rgba(247, 244, 239, 0.22);
+  --edge-light: rgba(10, 12, 16, 0.1);
+  --edge-light-strong: rgba(10, 12, 16, 0.18);
 }
 
 html {
   scroll-behavior: smooth;
-  /* Offset for the fixed header when jumping to an anchor */
-  scroll-padding-top: 6.5rem;
+  scroll-padding-top: 5.5rem;
   background-color: var(--color-void);
 }
 
 body {
   background-color: var(--color-void);
-  color: var(--color-ink);
+  color: var(--color-cream);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -63,45 +73,61 @@ body {
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--color-signal) 20%, transparent);
-  color: var(--color-ink);
+  background: color-mix(in oklab, var(--color-ember) 35%, transparent);
+  color: var(--color-cream);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-signal);
+  outline: 2px solid var(--color-ember);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(11, 26, 46, 0.22) transparent;
+  scrollbar-color: rgba(247, 244, 239, 0.22) transparent;
 }
 *::-webkit-scrollbar { width: 9px; height: 9px; }
 *::-webkit-scrollbar-thumb {
-  background: rgba(11, 26, 46, 0.2);
+  background: rgba(247, 244, 239, 0.18);
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
-/* A white panel that lifts off the ground with a soft shadow rather than a
-   heavy border — the light-mode counterpart of the old glass surface. */
-@utility glass {
-  background: var(--color-abyss);
-  border: 1px solid var(--edge);
-  box-shadow: var(--card-shadow);
+/* Band helpers — high-contrast section rhythm */
+@utility band-dark {
+  background: var(--color-void);
+  color: var(--color-cream);
 }
 
-@utility hairline {
-  border: 1px solid var(--edge);
+@utility band-paper {
+  background: var(--color-paper);
+  color: var(--color-ink);
 }
 
-@utility text-gradient-ice {
-  background: linear-gradient(168deg, #0b1a2e 10%, #16304f 60%, #24435f 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+@utility hairline-dark {
+  border-color: var(--edge-dark);
+}
+
+@utility hairline-light {
+  border-color: var(--edge-light);
+}
+
+@utility stage-frame {
+  border: 1px solid var(--edge-light);
+  background: var(--color-panel);
+}
+
+@utility stage-frame-dark {
+  border: 1px solid var(--edge-dark);
+  background: color-mix(in oklab, var(--color-cream) 4%, var(--color-void));
 }
 
 @media (prefers-reduced-motion: reduce) {

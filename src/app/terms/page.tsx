@@ -68,7 +68,7 @@ export default function TermsPage() {
         />
         <p>
           Our{" "}
-          <Link href="/acceptable-use" className="text-signal underline underline-offset-4 hover:text-signal-deep">
+          <Link href="/acceptable-use" className="text-ember underline underline-offset-4 hover:text-ink">
             Anti-Spam and Acceptable Use policy
           </Link>{" "}
           sets out the additional rules that apply to clients who receive leads from us.
