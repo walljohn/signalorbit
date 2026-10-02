@@ -1,13 +1,15 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-import { useIsVisible, useRenderTier } from "@/lib/hooks";
+import { useAfterIdle, useIsVisible, useRenderTier, useScrollProgressRef } from "@/lib/hooks";
 import { Cta } from "@/components/ui";
 import { FREE_LEADS } from "@/lib/content";
 import { OrbitFallback } from "./OrbitFallback";
 
-const OrbitScene = dynamic(() => import("./OrbitScene"), { ssr: false });
+const OrbitScene = dynamic(() => import("./OrbitScene"), {
+  ssr: false,
+  loading: () => null,
+});
 
 const ASSURANCES = [
   `Your first ${FREE_LEADS} leads are free`,
@@ -18,20 +20,13 @@ const ASSURANCES = [
 export function Hero() {
   const tier = useRenderTier();
   const { ref, visible } = useIsVisible<HTMLDivElement>();
-  const [scrollT, setScrollT] = useState(0);
+  const scroll = useScrollProgressRef(true);
 
-  useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      const h = Math.max(window.innerHeight, 1);
-      setScrollT(Math.min(y / h, 1));
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const showCanvas = tier === "high" || tier === "low";
+  // Static SVG paints first. WebGL only after idle + visible, and never when
+  // reduced-motion / low-power forced the static tier.
+  const canUse3d = tier === "high" || tier === "low";
+  const idleReady = useAfterIdle(canUse3d && visible, 900);
+  const showCanvas = canUse3d && idleReady;
 
   return (
     <section
@@ -39,24 +34,21 @@ export function Hero() {
       ref={ref}
       className="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden band-dark pt-28 pb-16 sm:pb-20 lg:justify-center lg:pb-0"
     >
-      {/* Full-bleed orbit — deliberate centerpiece, not a side ornament */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          transform: `scale(${1 + scrollT * 0.08}) translateY(${scrollT * -4}%)`,
-          opacity: 1 - scrollT * 0.35,
-          transition: "none",
-        }}
-      >
-        {showCanvas ? (
-          <OrbitScene tier={tier} mode="hero" paused={!visible} />
-        ) : tier === "static" ? (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <OrbitFallback
-              theme="dark"
-              className="h-[min(110vw,820px)] w-[min(110vw,820px)] opacity-80"
-            />
+      {/* Full-bleed orbit — static shell always; 3D crossfades in when ready */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <OrbitFallback
+            theme="dark"
+            className={[
+              "h-[min(110vw,820px)] w-[min(110vw,820px)] transition-opacity duration-700 ease-out",
+              showCanvas ? "opacity-0" : "opacity-80",
+            ].join(" ")}
+          />
+        </div>
+
+        {showCanvas && tier ? (
+          <div className="absolute inset-0 opacity-100 motion-safe:animate-[rise_0.9s_cubic-bezier(0.16,1,0.3,1)_both]">
+            <OrbitScene tier={tier} mode="hero" paused={!visible} scroll={scroll} />
           </div>
         ) : null}
       </div>

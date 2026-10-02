@@ -2,7 +2,7 @@
 
 import { PerspectiveCamera } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useMemo, useRef } from "react";
+import { type MutableRefObject, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { usePointerVector } from "@/lib/hooks";
 import type { RenderTier } from "@/lib/hooks";
@@ -32,12 +32,19 @@ type RingSpec = {
   speed: number;
 };
 
+/** Mobile / low tier keeps a sparse orbital field; high stays cinematic but not dense. */
 function ringSpecs(tier: RenderTier): RingSpec[] {
-  const dense = tier === "high";
+  if (tier === "low") {
+    return [
+      { radius: 2.45, count: 4, tilt: [0.42, 0, 0.16], speed: 0.038 },
+      { radius: 3.55, count: 5, tilt: [-0.28, 0.6, -0.3], speed: -0.028 },
+      { radius: 4.7, count: 6, tilt: [0.74, -0.4, 0.5], speed: 0.02 },
+    ];
+  }
   return [
-    { radius: 2.45, count: dense ? 8 : 5, tilt: [0.42, 0, 0.16], speed: 0.052 },
-    { radius: 3.55, count: dense ? 10 : 7, tilt: [-0.28, 0.6, -0.3], speed: -0.037 },
-    { radius: 4.7, count: dense ? 12 : 8, tilt: [0.74, -0.4, 0.5], speed: 0.026 },
+    { radius: 2.45, count: 7, tilt: [0.42, 0, 0.16], speed: 0.048 },
+    { radius: 3.55, count: 9, tilt: [-0.28, 0.6, -0.3], speed: -0.034 },
+    { radius: 4.7, count: 10, tilt: [0.74, -0.4, 0.5], speed: 0.024 },
   ];
 }
 
@@ -68,8 +75,8 @@ function Core({ dot }: { dot: THREE.Texture }) {
   useFrame(({ clock }) => {
     const t = clock.elapsedTime;
     if (shell.current) {
-      shell.current.rotation.y = t * 0.09;
-      shell.current.rotation.x = Math.sin(t * 0.16) * 0.16;
+      shell.current.rotation.y = t * 0.07;
+      shell.current.rotation.x = Math.sin(t * 0.12) * 0.1;
     }
   });
 
@@ -199,27 +206,58 @@ function Ring({ spec, seed, dot }: { spec: RingSpec; seed: number; dot: THREE.Te
   );
 }
 
-/** Hero mode: centered, large, cinematic. */
-function System({ tier }: { tier: RenderTier }) {
+/**
+ * One strong product moment: scroll drives scale + yaw + depth parallax;
+ * pointer adds a soft tilt on the same rig. Ambient ring spin stays quiet.
+ */
+function System({
+  tier,
+  scroll,
+}: {
+  tier: RenderTier;
+  scroll: MutableRefObject<number>;
+}) {
   const outer = useRef<THREE.Group>(null);
+  const rig = useRef<THREE.Group>(null);
   const dot = useDotTexture();
   const pointer = usePointerVector(true);
   const specs = useMemo(() => ringSpecs(tier), [tier]);
   const { viewport } = useThree();
 
-  const scale = Math.min(1.15, Math.max(0.72, viewport.width / 14));
+  const baseScale = Math.min(1.15, Math.max(0.72, viewport.width / 14));
 
   useFrame((_, delta) => {
-    if (!outer.current) return;
-    const damp = 1 - Math.pow(0.0015, delta);
-    const targetY = pointer.current.x * 0.22;
-    const targetX = pointer.current.y * 0.14;
-    outer.current.rotation.y += (targetY - outer.current.rotation.y) * damp;
-    outer.current.rotation.x += (targetX - outer.current.rotation.x) * damp;
+    if (!outer.current || !rig.current) return;
+
+    const s = scroll.current;
+    // Ease into the scroll response so the first flick feels deliberate.
+    const scrollEase = s * s * (3 - 2 * Math.min(s, 1));
+
+    const damp = 1 - Math.pow(0.0012, delta);
+
+    // Pointer tilt — readable, not twitchy.
+    const targetTiltY = pointer.current.x * 0.38;
+    const targetTiltX = pointer.current.y * 0.22;
+
+    outer.current.rotation.y += (targetTiltY - outer.current.rotation.y) * damp;
+    outer.current.rotation.x += (targetTiltX - outer.current.rotation.x) * damp;
+
+    // Scroll: scale up, yaw the field, and sink/parallax as you leave the hero.
+    const targetScale = baseScale * (1 + scrollEase * 0.42);
+    const targetYaw = scrollEase * 0.85;
+    const targetZ = -scrollEase * 1.65;
+    const targetY = -scrollEase * 0.55;
+
+    const cur = rig.current.scale.x;
+    const nextScale = cur + (targetScale - cur) * damp;
+    rig.current.scale.setScalar(nextScale);
+    rig.current.rotation.y += (targetYaw - rig.current.rotation.y) * damp;
+    rig.current.position.z += (targetZ - rig.current.position.z) * damp;
+    rig.current.position.y += (targetY - rig.current.position.y) * damp;
   });
 
   return (
-    <group position={[0, 0.15, 0]} scale={scale}>
+    <group ref={rig} position={[0, 0.15, 0]} scale={baseScale}>
       <group ref={outer}>
         <Core dot={dot} />
         {specs.map((spec, i) => (
@@ -230,44 +268,52 @@ function System({ tier }: { tier: RenderTier }) {
   );
 }
 
-function DriftingCamera() {
+function ProductCamera({ scroll }: { scroll: MutableRefObject<number> }) {
   const camera = useRef<THREE.PerspectiveCamera>(null);
 
-  useFrame(({ clock }) => {
+  useFrame((_, delta) => {
     const cam = camera.current;
     if (!cam) return;
-    const t = clock.elapsedTime;
-    cam.position.y = 0.2 + Math.sin(t * 0.19) * 0.12;
-    cam.position.x = Math.sin(t * 0.11) * 0.18;
+    const s = scroll.current;
+    const scrollEase = s * s * (3 - 2 * Math.min(s, 1));
+    const damp = 1 - Math.pow(0.0015, delta);
+
+    // Subtle dolly tied to the same scroll moment — no free-floating drift.
+    const targetZ = 10.2 - scrollEase * 1.1;
+    const targetY = 0.18 + scrollEase * 0.35;
+    cam.position.z += (targetZ - cam.position.z) * damp;
+    cam.position.y += (targetY - cam.position.y) * damp;
     cam.lookAt(0, 0, 0);
   });
 
   return (
-    <PerspectiveCamera ref={camera} makeDefault position={[0, 0.2, 10.2]} fov={40} near={0.1} far={60} />
+    <PerspectiveCamera ref={camera} makeDefault position={[0, 0.18, 10.2]} fov={40} near={0.1} far={60} />
   );
 }
 
 export default function OrbitScene({
   tier,
   paused,
+  scroll,
 }: {
   tier: RenderTier;
   /** Kept for API compatibility; hero is always centered. */
   mode?: "hero";
   split?: boolean;
   paused: boolean;
+  scroll: MutableRefObject<number>;
 }) {
   return (
     <Canvas
       flat
       frameloop={paused ? "never" : "always"}
-      dpr={tier === "high" ? [1, 1.9] : [1, 1.4]}
-      gl={{ antialias: true, powerPreference: "high-performance", alpha: true }}
+      dpr={tier === "high" ? [1, 1.75] : [1, 1.25]}
+      gl={{ antialias: tier === "high", powerPreference: "high-performance", alpha: true }}
       style={{ pointerEvents: "none" }}
     >
       <fog attach="fog" args={[GROUND, 14, 40]} />
-      <DriftingCamera />
-      <System tier={tier} />
+      <ProductCamera scroll={scroll} />
+      <System tier={tier} scroll={scroll} />
     </Canvas>
   );
 }
