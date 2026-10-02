@@ -1,20 +1,17 @@
 import Link from "next/link";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 
-export function Eyebrow({
+/** Small margin index — print caption, not mono-tracking AI eyebrow. */
+export function IndexMark({
   children,
-  tone = "dark",
+  tone = "light",
 }: {
   children: ReactNode;
   tone?: "dark" | "light";
 }) {
-  const color = tone === "dark" ? "text-ember" : "text-ember";
-  const rule = tone === "dark" ? "bg-ember/70" : "bg-ember/80";
+  const color = tone === "dark" ? "text-fog" : "text-mist";
   return (
-    <span
-      className={`inline-flex items-center gap-3 font-mono text-[11px] font-medium tracking-[0.32em] uppercase ${color}`}
-    >
-      <span aria-hidden className={`h-px w-8 ${rule}`} />
+    <span className={`caption inline-block ${color}`}>
       {children}
     </span>
   );
@@ -22,21 +19,22 @@ export function Eyebrow({
 
 type CtaProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
-  variant?: "solid" | "ghost" | "invert";
+  variant?: "solid" | "ghost" | "invert" | "rule";
   children: ReactNode;
 };
 
-/** Solid cream on dark / ink on light — fewer, stronger CTAs (Apple / Lightship). */
 export function Cta({ href, variant = "solid", children, className = "", ...rest }: CtaProps) {
   const base =
-    "group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-[0.92rem] font-medium tracking-[-0.01em] transition-colors duration-300";
+    "group relative inline-flex items-center justify-center gap-3 text-[0.92rem] font-medium tracking-[-0.01em] transition-colors duration-300";
 
   const styles =
     variant === "solid"
-      ? "bg-cream text-ink hover:bg-white"
+      ? "bg-cream px-8 py-4 text-ink hover:bg-white"
       : variant === "invert"
-        ? "bg-ink text-cream hover:bg-void"
-        : "border border-current/30 text-inherit hover:border-current/60";
+        ? "bg-ink px-8 py-4 text-cream hover:bg-void"
+        : variant === "rule"
+          ? "border-b border-current/40 pb-1 text-inherit hover:border-current"
+          : "border border-current/30 px-8 py-4 text-inherit hover:border-current/60";
 
   return (
     <Link href={href} className={`${base} ${styles} ${className}`} {...rest}>
@@ -45,34 +43,33 @@ export function Cta({ href, variant = "solid", children, className = "", ...rest
   );
 }
 
+/** Prefer composing headings per-section. Kept for legal pages / form leftovers. */
 export function SectionHeading({
-  eyebrow,
+  index,
   title,
   lede,
   tone = "light",
-  align = "left",
+  wide = false,
 }: {
-  eyebrow: string;
+  index?: string;
   title: ReactNode;
   lede?: ReactNode;
   tone?: "dark" | "light";
-  align?: "left" | "center";
+  wide?: boolean;
 }) {
   const titleColor = tone === "dark" ? "text-cream" : "text-ink";
   const ledeColor = tone === "dark" ? "text-fog" : "text-mist";
 
   return (
-    <div className={align === "center" ? "mx-auto max-w-4xl text-center" : "max-w-4xl"}>
-      <Eyebrow tone={tone}>{eyebrow}</Eyebrow>
+    <div className={wide ? "max-w-5xl" : "max-w-3xl"}>
+      {index ? <IndexMark tone={tone}>{index}</IndexMark> : null}
       <h2
-        className={`display mt-7 text-balance text-[2.6rem] sm:text-[3.5rem] lg:text-[4.25rem] ${titleColor}`}
+        className={`display ${index ? "mt-5" : ""} text-balance text-[2.4rem] sm:text-[3.15rem] lg:text-[3.75rem] ${titleColor}`}
       >
         {title}
       </h2>
       {lede ? (
-        <p
-          className={`mt-7 max-w-2xl text-pretty text-[1.05rem] leading-[1.75] sm:text-[1.12rem] ${ledeColor} ${align === "center" ? "mx-auto" : ""}`}
-        >
+        <p className={`mt-6 max-w-xl text-pretty text-[1.02rem] leading-[1.7] sm:text-[1.08rem] ${ledeColor}`}>
           {lede}
         </p>
       ) : null}
@@ -80,12 +77,7 @@ export function SectionHeading({
   );
 }
 
-export function Divider({ tone = "light" }: { tone?: "dark" | "light" }) {
-  const via = tone === "dark" ? "via-[var(--edge-dark-strong)]" : "via-[var(--edge-light-strong)]";
-  return (
-    <div
-      aria-hidden
-      className={`mx-auto h-px w-full max-w-6xl bg-gradient-to-r from-transparent ${via} to-transparent`}
-    />
-  );
+export function Rule({ tone = "light", className = "" }: { tone?: "dark" | "light"; className?: string }) {
+  const color = tone === "dark" ? "border-[var(--edge-dark)]" : "border-[var(--edge-light)]";
+  return <hr className={`border-0 border-t ${color} ${className}`} />;
 }

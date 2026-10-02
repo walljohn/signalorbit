@@ -1,24 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
+import { Inter, Source_Serif_4, IBM_Plex_Mono } from "next/font/google";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { FREE_LEADS, SITE } from "@/lib/content";
 import "./globals.css";
 
-const inter = Inter({
+const sans = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans-face",
   display: "swap",
 });
 
-const display = Instrument_Serif({
+/** Print-editorial serif — Source Serif 4, not Instrument Serif (AI portfolio default). */
+const display = Source_Serif_4({
   subsets: ["latin"],
   variable: "--font-display-face",
   display: "swap",
-  weight: "400",
+  weight: ["400", "500", "600"],
 });
 
-const mono = JetBrains_Mono({
+const mono = IBM_Plex_Mono({
   subsets: ["latin"],
   variable: "--font-mono-face",
   display: "swap",
@@ -93,7 +94,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#07090d",
+  themeColor: "#141210",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -115,7 +116,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${display.variable} ${mono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${display.variable} ${mono.variable}`}>
       <body className="antialiased">
         <a
           href="#main"

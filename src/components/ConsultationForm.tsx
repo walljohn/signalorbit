@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import { Reveal } from "@/components/Reveal";
-import { SectionHeading } from "@/components/ui";
 import { FREE_LEADS } from "@/lib/content";
 import {
   validateConsultation,
@@ -140,26 +139,29 @@ export function ConsultationForm() {
     "w-full border bg-void/40 px-4 py-3.5 text-[0.95rem] text-cream placeholder:text-dim transition-colors duration-300 focus:outline-none";
 
   return (
-    <section id="consultation" className="relative scroll-mt-24 py-28 sm:py-36 lg:py-44">
+    <section id="consultation" className="relative scroll-mt-24 pt-24 pb-28 sm:pt-32 sm:pb-36 lg:pt-36 lg:pb-44">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
           <Reveal>
             <div className="lg:sticky lg:top-28">
-              <SectionHeading
-                tone="dark"
-                eyebrow="Free leads"
-                title={`Get your first ${FREE_LEADS} leads free.`}
-                lede={`Tell us who you sell to. We’ll turn it into a written lead brief and deliver ${FREE_LEADS} verified leads against it before you pay anything.`}
-              />
+              <p className="caption text-fog">08 — Free leads</p>
+              <h2 className="display mt-5 text-balance text-[2.25rem] text-cream sm:text-[2.9rem] lg:text-[3.2rem]">
+                {`Get your first ${FREE_LEADS} leads free.`}
+              </h2>
+              <p className="mt-5 max-w-sm text-pretty text-[0.98rem] leading-[1.7] text-fog">
+                {`Tell us who you sell to. We’ll turn it into a written lead brief and deliver ${FREE_LEADS} verified leads against it before you pay anything.`}
+              </p>
 
               <ul className="mt-10 space-y-4 border-t border-[var(--edge-dark)] pt-8">
                 {[
                   "A written lead brief with the criteria spelled out",
                   `${FREE_LEADS} verified leads, each with sources and a recommended route`,
                   "A custom monthly proposal only if you want more",
-                ].map((item) => (
-                  <li key={item} className="flex gap-3.5 text-[0.92rem] leading-relaxed text-fog">
-                    <span aria-hidden className="mt-2.5 h-px w-4 shrink-0 bg-ember" />
+                ].map((item, i) => (
+                  <li key={item} className="grid grid-cols-[2rem_1fr] gap-3 text-[0.92rem] leading-relaxed text-fog">
+                    <span className="font-mono text-[10px] tabular-nums text-ember">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     {item}
                   </li>
                 ))}

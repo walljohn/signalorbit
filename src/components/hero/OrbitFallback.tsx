@@ -38,7 +38,7 @@ export function OrbitFallback({
   className?: string;
   theme?: "dark" | "light";
 }) {
-  const accent = theme === "dark" ? "#c4a062" : "#1662c4";
+  const accent = theme === "dark" ? "#b33a2b" : "#1662c4";
   const core = theme === "dark" ? "#f7f4ef" : "#0b1a2e";
   const washOpacity = theme === "dark" ? 0.18 : 0.14;
 
