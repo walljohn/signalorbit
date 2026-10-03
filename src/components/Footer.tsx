@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FREE_LEADS, NAV_LINKS, SITE } from "@/lib/content";
+import { NAV_LINKS, SITE } from "@/lib/content";
 import { LEGAL, LEGAL_PAGES } from "@/lib/legal";
 
 export function Footer() {
@@ -48,7 +48,7 @@ export function Footer() {
                     href="/#consultation"
                     className="text-[0.88rem] text-fog transition-colors hover:text-cream"
                   >
-                    {`Get ${FREE_LEADS} leads free`}
+                    Request my free leads
                   </Link>
                 </li>
                 <li>
