@@ -87,7 +87,7 @@ export function Hero() {
 
           <div className="mt-12">
             <Cta href="#consultation">
-              {`Get ${FREE_LEADS} leads free`}
+              Request my free leads
               <svg
                 aria-hidden
                 viewBox="0 0 16 16"
