@@ -20,9 +20,9 @@ function mulberry32(seed: number) {
 /* Dark cinematic palette — bright nodes on charcoal, not soft blue paper diagram */
 const GROUND = "#07090d";
 const CORE_COLOR = new THREE.Color("#f7f4ef");
-const NODE_COLOR = new THREE.Color("#c4a062");
+const NODE_COLOR = new THREE.Color("#b33a2b");
 const NODE_DEEP = new THREE.Color("#f7f4ef");
-const LINK_NEAR = new THREE.Color("#c4a062");
+const LINK_NEAR = new THREE.Color("#b33a2b");
 const LINK_FAR = new THREE.Color("#3a3428");
 
 type RingSpec = {

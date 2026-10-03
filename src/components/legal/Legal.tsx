@@ -47,7 +47,7 @@ export function Bullets({ items }: { items: ReactNode[] }) {
 /** A callout for the things a reader most needs to notice. */
 export function Callout({ children }: { children: ReactNode }) {
   return (
-    <div className="border border-ember/30 bg-[rgba(196,160,98,0.1)] p-5 text-[0.95rem] leading-[1.7] text-ink">
+    <div className="border border-ember/30 bg-[rgba(179,58,43,0.08)] p-5 text-[0.95rem] leading-[1.7] text-ink">
       {children}
     </div>
   );

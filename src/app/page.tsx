@@ -11,16 +11,21 @@ export default function Home() {
   return (
     <>
       <Hero />
+      {/* Uneven band rhythm: paper → dark demo → panel services → paper offer/onboard → ink FAQ stripe → dark form */}
       <div className="band-paper">
         <Process />
       </div>
       <div className="band-dark">
         <EmailDemo />
       </div>
-      <div className="band-paper">
+      <div className="band-panel">
         <Services />
+      </div>
+      <div className="band-paper">
         <Offer />
         <Onboarding />
+      </div>
+      <div className="band-paper border-t border-[var(--edge-light)]">
         <Faq />
       </div>
       <div className="band-dark">

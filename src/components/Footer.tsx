@@ -26,7 +26,7 @@ export function Footer() {
 
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
             <div>
-              <p className="font-mono text-[10px] tracking-[0.24em] text-dim uppercase">Sections</p>
+              <p className="caption text-dim">Sections</p>
               <ul className="mt-4 space-y-2.5">
                 {NAV_LINKS.map((link) => (
                   <li key={link.id}>
@@ -41,7 +41,7 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <p className="font-mono text-[10px] tracking-[0.24em] text-dim uppercase">Start</p>
+              <p className="caption text-dim">Start</p>
               <ul className="mt-4 space-y-2.5">
                 <li>
                   <Link
@@ -70,7 +70,7 @@ export function Footer() {
               </ul>
             </div>
             <div className="col-span-2 sm:col-span-1">
-              <p className="font-mono text-[10px] tracking-[0.24em] text-dim uppercase">Legal</p>
+              <p className="caption text-dim">Legal</p>
               <ul className="mt-4 space-y-2.5">
                 {LEGAL_PAGES.map((page) => (
                   <li key={page.href}>

@@ -1,39 +1,45 @@
 @import "tailwindcss";
 
 @theme {
-  /* Surfaces — charcoal cinema + warm paper (Lightship / Apple rhythm) */
-  --color-void: #07090d;
-  --color-paper: #f3f0ea;
-  --color-panel: #faf8f4;
-  --color-ink: #0a0c10;
-  --color-cream: #f7f4ef;
-  --color-mist: #5c616c;
-  --color-dim: #8b909c;
-  --color-fog: #c4c8d0;
+  /* Studio palette — warm paper dominant, ink, oxidised signal (not charcoal+gold SaaS) */
+  --color-void: #141210;
+  --color-paper: #f2ebe0;
+  --color-panel: #faf6ef;
+  --color-ink: #141210;
+  --color-cream: #f7f2ea;
+  --color-mist: #5a554c;
+  --color-dim: #8a8378;
+  --color-fog: #b7b0a4;
 
-  /* Accent — used sparingly as solid marks, never as soft radial identity */
-  --color-signal: #e8e4dc;
-  --color-signal-ink: #0a0c10;
-  --color-ember: #c4a062;
+  --color-signal: #f2ebe0;
+  --color-signal-ink: #141210;
+  --color-ember: #b33a2b;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: var(--font-display-face), var(--font-inter), ui-serif, Georgia, serif;
+  --font-sans: var(--font-sans-face), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-display-face), ui-serif, "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-mono: var(--font-mono-face), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  --radius-panel: 2px;
-  --radius-control: 2px;
+  --radius-panel: 0px;
+  --radius-control: 0px;
 
   --animate-caret: caret 1.05s steps(1) infinite;
   --animate-float-slow: float-slow 12s ease-in-out infinite;
-  --animate-rise: rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
 
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(18px); }
+    from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: translateY(0); }
   }
   @keyframes rise {
-    from { opacity: 0; transform: translateY(28px); }
+    from { opacity: 0; transform: translateY(22px); }
     to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-left {
+    from { opacity: 0; transform: translateX(18px); }
+    to { opacity: 1; transform: translateX(0); }
   }
   @keyframes caret {
     0%, 50% { opacity: 1; }
@@ -41,25 +47,22 @@
   }
   @keyframes float-slow {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
-  @keyframes line-grow {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
+    50% { transform: translateY(-6px); }
   }
 }
 
 :root {
   color-scheme: dark light;
-  --edge-dark: rgba(247, 244, 239, 0.12);
-  --edge-dark-strong: rgba(247, 244, 239, 0.22);
-  --edge-light: rgba(10, 12, 16, 0.1);
-  --edge-light-strong: rgba(10, 12, 16, 0.18);
+  --edge-dark: rgba(247, 242, 234, 0.11);
+  --edge-dark-strong: rgba(247, 242, 234, 0.2);
+  --edge-light: rgba(20, 18, 16, 0.12);
+  --edge-light-strong: rgba(20, 18, 16, 0.22);
+  --rule: rgba(20, 18, 16, 0.16);
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5.5rem;
+  scroll-padding-top: 5.25rem;
   background-color: var(--color-void);
 }
 
@@ -73,7 +76,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--color-ember) 35%, transparent);
+  background: color-mix(in oklab, var(--color-ember) 32%, transparent);
   color: var(--color-cream);
 }
 
@@ -84,17 +87,16 @@ body {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(247, 244, 239, 0.22) transparent;
+  scrollbar-color: rgba(247, 242, 234, 0.2) transparent;
 }
-*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
 *::-webkit-scrollbar-thumb {
-  background: rgba(247, 244, 239, 0.18);
+  background: rgba(247, 242, 234, 0.16);
   border-radius: 999px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
-/* Band helpers — high-contrast section rhythm */
 @utility band-dark {
   background: var(--color-void);
   color: var(--color-cream);
@@ -105,11 +107,34 @@ body {
   color: var(--color-ink);
 }
 
+@utility band-panel {
+  background: var(--color-panel);
+  color: var(--color-ink);
+}
+
+/* Print-editorial display: tighter tracking, real serif rhythm */
 @utility display {
   font-family: var(--font-display);
   font-weight: 400;
-  letter-spacing: -0.03em;
-  line-height: 0.95;
+  letter-spacing: -0.022em;
+  line-height: 1.02;
+  font-optical-sizing: auto;
+}
+
+@utility display-tight {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.028em;
+  line-height: 0.96;
+  font-optical-sizing: auto;
+}
+
+@utility caption {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 @utility hairline-dark {
@@ -127,7 +152,19 @@ body {
 
 @utility stage-frame-dark {
   border: 1px solid var(--edge-dark);
-  background: color-mix(in oklab, var(--color-cream) 4%, var(--color-void));
+  background: color-mix(in oklab, var(--color-cream) 3.5%, var(--color-void));
+}
+
+/* Ruled dossier surface for product UI */
+@utility dossier {
+  background:
+    linear-gradient(90deg, transparent 47px, color-mix(in oklab, var(--color-ember) 28%, transparent) 47px, color-mix(in oklab, var(--color-ember) 28%, transparent) 48px, transparent 48px),
+    repeating-linear-gradient(
+      transparent,
+      transparent 27px,
+      color-mix(in oklab, var(--color-cream) 6%, transparent) 27px,
+      color-mix(in oklab, var(--color-cream) 6%, transparent) 28px
+    );
 }
 
 @media (prefers-reduced-motion: reduce) {
