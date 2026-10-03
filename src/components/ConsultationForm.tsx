@@ -52,17 +52,8 @@ const FIELDS: {
     label: "Who are you trying to reach?",
     placeholder: "Operations directors at 3PL and freight businesses in the Benelux, 50–500 staff.",
     multiline: true,
-    rows: 3,
+    rows: 2,
     hint: "Industry, company size, region, and the role that owns the problem.",
-  },
-  {
-    key: "goals",
-    label: "What would a good outcome look like?",
-    placeholder:
-      "We want a steady flow of qualified conversations for two AEs, and a clearer read on which segments respond.",
-    multiline: true,
-    rows: 4,
-    hint: "Be honest about constraints — it makes the proposal more useful.",
   },
 ];
 
@@ -72,6 +63,7 @@ export function ConsultationForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [formError, setFormError] = useState<string | null>(null);
   const honeypot = useRef<HTMLInputElement>(null);
+  const moreRef = useRef<HTMLDetailsElement>(null);
   const uid = useId();
 
   const setField = (key: keyof ConsultationInput, next: string) => {
@@ -91,8 +83,14 @@ export function ConsultationForm() {
     const result = validateConsultation(values);
     if (!result.ok) {
       setErrors(result.errors);
+      if (result.errors.goals && moreRef.current) moreRef.current.open = true;
       const first = FIELDS.find((f) => result.errors[f.key]);
-      if (first) document.getElementById(`${uid}-${first.key}`)?.focus();
+      const focusId = first
+        ? `${uid}-${first.key}`
+        : result.errors.goals
+          ? `${uid}-goals`
+          : null;
+      if (focusId) requestAnimationFrame(() => document.getElementById(focusId)?.focus());
       return;
     }
 
@@ -119,7 +117,10 @@ export function ConsultationForm() {
         return;
       }
 
-      if (data.fieldErrors) setErrors(data.fieldErrors);
+      if (data.fieldErrors) {
+        setErrors(data.fieldErrors);
+        if (data.fieldErrors.goals && moreRef.current) moreRef.current.open = true;
+      }
       setFormError(
         STATIC_PREVIEW
           ? "This is a static preview with no backend behind it, so nothing was sent. Wire up the form per README.md on a real deployment."
@@ -281,6 +282,60 @@ export function ConsultationForm() {
                       );
                     })}
                   </div>
+
+                  <details ref={moreRef} className="group mt-1">
+                    <summary className="inline-flex cursor-pointer list-none items-center gap-2 py-0.5 text-[0.9rem] font-medium text-fog marker:content-none hover:text-cream [&::-webkit-details-marker]:hidden">
+                      <svg
+                        aria-hidden
+                        viewBox="0 0 12 12"
+                        className="h-2.5 w-2.5 text-ember transition-transform duration-200 group-open:rotate-90"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M4.2 2.2 8 6 4.2 9.8" />
+                      </svg>
+                      Anything else? (optional)
+                    </summary>
+                    <div className="mt-4">
+                      <label
+                        htmlFor={`${uid}-goals`}
+                        className="mb-2 block text-[0.85rem] font-medium text-fog"
+                      >
+                        What would a good outcome look like?
+                      </label>
+                      <textarea
+                        id={`${uid}-goals`}
+                        name="goals"
+                        rows={3}
+                        value={values.goals}
+                        onChange={(e) => setField("goals", e.target.value)}
+                        onBlur={() => validateField("goals")}
+                        placeholder="A steady flow of qualified conversations, and a clearer read on which segments respond."
+                        aria-invalid={errors.goals ? true : undefined}
+                        aria-describedby={errors.goals ? `${uid}-goals-error` : undefined}
+                        className={`${inputBase} ${
+                          errors.goals
+                            ? "border-red-400/60 focus:border-red-400"
+                            : "border-[var(--edge-dark-strong)] focus:border-ember"
+                        } resize-y`}
+                      />
+                      {errors.goals ? (
+                        <p
+                          id={`${uid}-goals-error`}
+                          className="mt-2 flex items-center gap-1.5 text-[0.79rem] text-red-300"
+                        >
+                          <svg aria-hidden viewBox="0 0 14 14" className="h-3 w-3 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+                            <circle cx="7" cy="7" r="5.6" />
+                            <path d="M7 4.3v3.4M7 9.6v.1" />
+                          </svg>
+                          {errors.goals}
+                        </p>
+                      ) : null}
+                    </div>
+                  </details>
 
                   <div aria-live="polite">
                     {formError ? (
