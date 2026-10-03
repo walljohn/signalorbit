@@ -13,7 +13,7 @@ export type FieldErrors = Partial<Record<keyof ConsultationInput, string>>;
 export const FIELD_LIMITS = {
   name: { min: 2, max: 80 },
   audience: { min: 12, max: 600 },
-  goals: { min: 12, max: 1000 },
+  goals: { max: 1000 },
 } as const;
 
 // Deliberately permissive: enough structure to catch typos, not so strict that
@@ -99,9 +99,8 @@ export function validateConsultation(input: Partial<ConsultationInput>): {
     errors.audience = `Please keep this under ${FIELD_LIMITS.audience.max} characters.`;
   }
 
-  if (value.goals.length < FIELD_LIMITS.goals.min) {
-    errors.goals = "Tell us what a good outcome looks like for you.";
-  } else if (value.goals.length > FIELD_LIMITS.goals.max) {
+  // Optional. Empty is valid; a provided answer still has to fit the max length.
+  if (value.goals.length > FIELD_LIMITS.goals.max) {
     errors.goals = `Please keep this under ${FIELD_LIMITS.goals.max} characters.`;
   }
 
