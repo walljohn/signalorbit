@@ -32,7 +32,7 @@ export function Offer() {
 
                 <div className="mt-10">
                   <Cta href="#consultation" variant="solid">
-                    {`Get ${FREE_LEADS} leads free`}
+                    Request my free leads
                     <svg
                       aria-hidden
                       viewBox="0 0 16 16"
