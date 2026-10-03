@@ -378,6 +378,9 @@ export function ConsultationForm() {
                     </Link>
                     .
                   </p>
+                  <p className="mt-5 text-[0.79rem] leading-relaxed text-dim">
+                    The first 25 leads are free, and there’s no price until you ask for more.
+                  </p>
                 </form>
               )}
             </div>
